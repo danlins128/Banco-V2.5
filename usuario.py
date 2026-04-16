@@ -1,0 +1,9 @@
+class Usuarios:
+    def __init__(self, nome, login, saldo):
+        self.nome = nome
+        self.login = login
+        self.saldo = saldo
+
+    def exibir(self):
+        print(
+            f"O usuário encontrado foi o {self.nome}, o login cadastrado é {self.login}, o saldo da conta atual é de R${self.saldo:,.2f}\n")

@@ -26,6 +26,7 @@ class ContaService:
 			return
 		usuario.saldo += valor
 		print(f"Depósito de {valor:,.2f} efetuado com sucesso\n")
+		print(f"Novo saldo atual de {usuario.nome}, R$ {usuario.saldo}.")
 				
 	def sacar(self, login, valor):
 		cliente = self.banco.buscar_usuario(login)
@@ -55,8 +56,7 @@ class ContaService:
 	    return
 	  cliente_origem.saldo -= valor
 	  cliente_destino.saldo += valor
-	  print(f"Transferência de {cliente_origem.nome} para {cliente_destino.nome}
-	  realizado com sucesso")
+	  print(f"Transferência de {cliente_origem.nome} para {cliente_destino.nome} realizado com sucesso")
 	  print(f"Novo saldo atual de {cliente_origem.nome}, R$ {cliente_origem.saldo}.")
 	  print(f"Novo saldo atual de {cliente_destino.nome} R$ {cliente_destino.saldo}.")
 		  
