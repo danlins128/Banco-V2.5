@@ -1,5 +1,6 @@
 from service import ContaService
 from repository import UsuarioRepository
+import flask
 
 repo = UsuarioRepository()
 service = ContaService(repo)
