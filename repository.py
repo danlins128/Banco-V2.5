@@ -1,13 +1,29 @@
-class Banco:
+import sqlite3 
+
+class UsuarioRepository:
 	def __init__(self):
-		self.usuarios=[]
+		self.conn = sqlite3.connect("banco_dados.db")
+		self.cursor = self.conn.cursor()
 		
-	def adicionar_usuarios(self, usuario):
-		self.usuarios.append(usuario)
-		print("Usuário Cadastrado com sucesso!\n")
+		self.cursor.execute("""CREATE TABLE IF 				NOT EXISTS usuarios(id INTEGER 						PRIMARY KEY AUTOINCREMENT,
+			nome TEXT,
+			login TEXT UNIQUE,
+			senha TEXT UNIQUE,
+			saldo REAL)""")
+		self.conn.commit()
 		
-	def buscar_usuario(self, login):
-		for usuario in self.usuarios:
-			if usuario.login==login:
-				return usuario
-		return None
+	def buscar_por_login(self, login):
+	  self.cursor.execute("SELECT nome, login, senha FROM usuario WHERE login = ?",
+	  (login))
+	  dados = self.cursor.fetchone()
+	  if dados:
+	    return Usuario(*dados)
+	  return None
+	
+	def cadastrar(self, usuario):
+	  self.cursor.execute("INSERT INTO usuario (nome, login, senha), VALUES (?, ?, ?)"
+	  (usuario.nome, usuario.login, usuario.senha))
+	  self.conn.commit()
+	
+conexao=UsuarioRepository()
+conexao.conn.close()
