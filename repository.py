@@ -1,14 +1,18 @@
 import sqlite3 
+from random import randint
+from usuario import Usuarios
 
 class UsuarioRepository:
 	def __init__(self):
 		self.conn = sqlite3.connect("banco_dados.db")
 		self.cursor = self.conn.cursor()
 		
-		self.cursor.execute("""CREATE TABLE IF 				NOT EXISTS usuarios(id INTEGER 						PRIMARY KEY AUTOINCREMENT,
+		self.cursor.execute("""CREATE TABLE IF NOT EXISTS usuarios(
+		    id INTEGER PRIMARY KEY AUTOINCREMENT,
+			conta INTEGER UNIQUE,
 			nome TEXT,
 			login TEXT UNIQUE,
-			senha TEXT UNIQUE,
+			senha TEXT,
 			saldo REAL)""")
 		self.conn.commit()
 		
@@ -21,9 +25,16 @@ class UsuarioRepository:
 	  return None
 	
 	def cadastrar(self, usuario):
-	  self.cursor.execute("INSERT INTO usuario (nome, login, senha), VALUES (?, ?, ?)"
-	  (usuario.nome, usuario.login, usuario.senha))
-	  self.conn.commit()
+	  while True:
+	      gerar_conta = randint (1000,9999)
+	      self.cursor.execute("SELECT conta FROM usuarios WHERE conta=?", 
+	      (gerar_conta,))
+	      resultado = self.cursor.fetchone()
+	      if resultado is None:
+	          self.cursor.execute("INSERT INTO usuarios (conta, nome, login, senha) VALUES (?, ?, ?, ?)",
+	          (gerar_conta, usuario.nome, usuario.login, usuario.senha))
+	          self.conn.commit()
+	          break
 	
 conexao=UsuarioRepository()
 conexao.conn.close()
