@@ -3,38 +3,38 @@ from random import randint
 from usuario import Usuarios
 
 class UsuarioRepository:
-	def __init__(self):
-		self.conn = sqlite3.connect("banco_dados.db")
-		self.cursor = self.conn.cursor()
-		
-		self.cursor.execute("""CREATE TABLE IF NOT EXISTS usuarios(
-		    id INTEGER PRIMARY KEY AUTOINCREMENT,
-			conta INTEGER UNIQUE,
-			nome TEXT,
-			login TEXT UNIQUE,
-			senha TEXT,
-			saldo REAL)""")
-		self.conn.commit()
-		
-	def buscar_por_login(self, login):
-	  self.cursor.execute("SELECT nome, login, senha FROM usuario WHERE login = ?",
-	  (login))
-	  dados = self.cursor.fetchone()
-	  if dados:
-	    return Usuario(*dados)
-	  return None
-	
-	def cadastrar(self, usuario):
-	  while True:
-	      gerar_conta = randint (1000,9999)
-	      self.cursor.execute("SELECT conta FROM usuarios WHERE conta=?", 
-	      (gerar_conta,))
-	      resultado = self.cursor.fetchone()
-	      if resultado is None:
-	          self.cursor.execute("INSERT INTO usuarios (conta, nome, login, senha) VALUES (?, ?, ?, ?)",
-	          (gerar_conta, usuario.nome, usuario.login, usuario.senha))
-	          self.conn.commit()
-	          break
-	
+    def __init__(self):
+        self.conn = sqlite3.connect("banco_dados.db")
+        self.cursor = self.conn.cursor()
+
+        self.cursor.execute("""CREATE TABLE IF NOT EXISTS usuarios(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            conta INTEGER UNIQUE,
+            nome TEXT,
+            login TEXT UNIQUE,
+            senha TEXT,
+            saldo REAL)""")
+        self.conn.commit()
+
+    def buscar_por_login(self, login):
+      self.cursor.execute("SELECT nome, login, senha FROM usuarios WHERE login = ?",
+      (login,))
+      dados = self.cursor.fetchone()
+      if dados:
+          return Usuarios(*dados)
+      return None
+
+    def cadastrar(self, usuario):
+      while True:
+          gerar_conta = randint (1000,9999)
+          self.cursor.execute("SELECT conta FROM usuarios WHERE conta=?",
+          (gerar_conta,))
+          resultado = self.cursor.fetchone()
+          if resultado is None:
+              self.cursor.execute("INSERT INTO usuarios (conta, nome, login, senha) VALUES (?, ?, ?, ?)",
+              (gerar_conta, usuario.nome, usuario.login, usuario.senha))
+              self.conn.commit()
+              break
+
 conexao=UsuarioRepository()
 conexao.conn.close()

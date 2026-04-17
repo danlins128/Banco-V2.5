@@ -7,8 +7,8 @@ class ContaService:
     if usuario:
       print("Usuario já cadastrado")
       return
-    from usuario import Usuario
-    novo = Usuario(nome, login, senha)
+    from usuario import Usuarios
+    novo = Usuarios(nome, login, senha)
     
     self.repo.cadastrar(novo)
     print("Cadastro efetuado com sucesso!")
