@@ -17,9 +17,9 @@ class ContaService:
     usuario = self.repo.buscar_por_login(login)
     
     if usuario is None:
-        return {"Erro": "Usuário não encontrado!"}
+        return {"erro": "Usuário não encontrado!"}
     if senha != usuario.senha:
-      return {"Erro": "Usuário ou senha inválido!"}
+      return {"erro": "Usuário ou senha inválido!"}
     
     return {"msg": f"Seja bem-vindo {usuario.nome}!"}
     

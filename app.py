@@ -1,10 +1,9 @@
 from flask import Flask, request, session
 from repository import UsuarioRepository
-from usuario import Usuarios
 from service import ContaService
 
 app = Flask(__name__)
-app.secret.key = "Secret_Key"
+app.secret_key = "Secret_Key"
 repo = UsuarioRepository()
 service= ContaService(repo)
 
@@ -22,11 +21,16 @@ def cadastro():
     
 @app.route("/login", methods=["POST"])
 def login():
-    data = request.json
-    login = data.get("login")
-    senha = data.get("senha")
-    return service.login(login,senha)
-    
+    data = request.json #1 pega os dados
+    resultado = service.login(
+        data.get("login"),
+        data.get("senha")
+    )#2 usa o service.py
+    if "erro" in resultado:
+        return resultado #3 não cria sessão, deu erro.
+    session["usuario"] = resultado["usuario"]["conta"]
+    #4 guarda quem está logado
+    return {"msg":"Sessão iniciada com sucesso!"}
     
 if __name__ == "__main__":
     app.run(debug=True)
