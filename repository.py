@@ -13,11 +13,12 @@ class UsuarioRepository:
             nome TEXT,
             login TEXT UNIQUE,
             senha TEXT,
-            saldo REAL)""")
+            saldo REAL DEFAULT 0)""")
         self.conn.commit()
 
     def buscar_por_login(self, login):
-      self.cursor.execute("SELECT nome, login, senha FROM usuarios WHERE login = ?",
+      self.cursor.execute("""SELECT nome, login, senha FROM usuarios WHERE login =
+      ?""",
       (login,))
       dados = self.cursor.fetchone()
       if dados:
@@ -27,7 +28,7 @@ class UsuarioRepository:
     def cadastrar(self, usuario):
       while True:
           gerar_conta = randint (1000,9999)
-          self.cursor.execute("SELECT conta FROM usuarios WHERE conta=?",
+          self.cursor.execute("""SELECT conta FROM usuarios WHERE conta=?""",
           (gerar_conta,))
           resultado = self.cursor.fetchone()
           if resultado is None:
