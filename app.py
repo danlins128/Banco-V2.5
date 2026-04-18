@@ -19,5 +19,13 @@ def cadastro():
     senha = data.get("senha")
     return service.cadastrar(nome, login, senha)
     
+@app.route("/login", methods=["POST"])
+def login():
+    data = request.json
+    login = data.get("login")
+    senha = data.get("senha")
+    return servic.login(login,senha)
+    
+    
 if __name__ == "__main__":
     app.run(debug=True)

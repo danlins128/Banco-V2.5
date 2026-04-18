@@ -19,7 +19,7 @@ class ContaService:
     if usuario is None:
         return {"Erro": "Usuário não encontrado!"}
     if senha != usuario.senha:
-      return {"Erro": "Usuário ou senha inválidos encontrado!"}
+      return {"Erro": "Usuário ou senha inválido!"}
     
     return {"msg": f"Seja bem-vindo {usuario.nome}!")
     
