@@ -7,4 +7,4 @@ class Usuarios:
         self.conta = 0
 
     def exibir(self):
-        print(f"O usuário encontrado foi o {self.				nome}, o login cadastrado é {self.login}, o 		saldo da conta atual é de R${self.saldo:,.				2f}\n")
+        print(f"O usuário encontrado foi o {self.nome}, o login cadastrado é {self.login}, o saldo da conta atual é de R${self.saldo:,.2f}\n")
