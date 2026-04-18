@@ -1,9 +1,10 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, session
 from repository import UsuarioRepository
 from usuario import Usuarios
 from service import ContaService
 
 app = Flask(__name__)
+app.secret.key = "Secret_Key"
 repo = UsuarioRepository()
 service= ContaService(repo)
 

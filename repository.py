@@ -38,6 +38,3 @@ class UsuarioRepository:
               usuario.saldo))
               self.conn.commit()
               break
-
-conexao=UsuarioRepository()
-conexao.conn.close()
