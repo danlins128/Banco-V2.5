@@ -5,23 +5,21 @@ class ContaService:
   def cadastrar(self, nome, login, senha):
     usuario = self.repo.buscar_por_login(login)
     if usuario:
-      print("Usuario já cadastrado")
-      return
+      return{"msg": "Usuario já cadastrado"}
+      
     from usuario import Usuarios
     novo = Usuarios(nome, login, senha)
     
     self.repo.cadastrar(novo)
-    print("Cadastro efetuado com sucesso!")
+    return{"msg": "Cadastro efetuado com sucesso!"}
     
   def login(self, login, senha):
     usuario = self.repo.buscar_por_login(login)
     
     if usuario is None:
-      print("Usuário não encontrado!")
-      return
+        return {"Erro": "Usuário não encontrado!"}
     if senha != usuario.senha:
-      print("Usuário ou senha inválido!")
-      return
+      return {"Erro": "Usuário ou senha inválidos encontrado!"}
     
-    print(f"Seja bem-vindo {usuario.nome}!")
-    return usuario
+    return {"msg": f"Seja bem-vindo {usuario.nome}!")
+    
