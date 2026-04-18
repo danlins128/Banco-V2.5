@@ -24,7 +24,7 @@ def login():
     data = request.json
     login = data.get("login")
     senha = data.get("senha")
-    return servic.login(login,senha)
+    return service.login(login,senha)
     
     
 if __name__ == "__main__":

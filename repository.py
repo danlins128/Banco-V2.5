@@ -4,7 +4,7 @@ from usuario import Usuarios
 
 class UsuarioRepository:
     def __init__(self):
-        self.conn = sqlite3.connect("banco_dados.db")
+        self.conn = sqlite3.connect("banco_dados.db", check_same_thread=False)
         self.cursor = self.conn.cursor()
 
         self.cursor.execute("""CREATE TABLE IF NOT EXISTS usuarios(
@@ -31,8 +31,10 @@ class UsuarioRepository:
           (gerar_conta,))
           resultado = self.cursor.fetchone()
           if resultado is None:
-              self.cursor.execute("INSERT INTO usuarios (conta, nome, login, senha) VALUES (?, ?, ?, ?)",
-              (gerar_conta, usuario.nome, usuario.login, usuario.senha))
+              self.cursor.execute("""INSERT INTO usuarios
+              (conta,nome,login,senha,saldo) VALUES (?,?,?,?,?)""",
+              (gerar_conta, usuario.nome, usuario.login, usuario.senha,
+              usuario.saldo))
               self.conn.commit()
               break
 
