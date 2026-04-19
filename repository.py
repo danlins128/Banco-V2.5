@@ -17,7 +17,7 @@ class UsuarioRepository:
         self.conn.commit()
 
     def buscar_por_login(self, login):
-      self.cursor.execute("""SELECT nome, login, senha FROM usuarios WHERE login =
+      self.cursor.execute("""SELECT nome, login, senha, saldo, conta FROM usuarios WHERE login =
       ?""",
       (login,))
       dados = self.cursor.fetchone()

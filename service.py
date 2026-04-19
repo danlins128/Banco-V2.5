@@ -21,5 +21,7 @@ class ContaService:
     if senha != usuario.senha:
       return {"erro": "Usuário ou senha inválido!"}
     
-    return {"msg": f"Seja bem-vindo {usuario.nome}!"}
+    return {"msg": f"Seja bem-vindo {usuario.nome}!",
+        "conta": usuario.conta
+    }
     

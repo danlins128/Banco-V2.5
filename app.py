@@ -28,7 +28,7 @@ def login():
     )#2 usa o service.py
     if "erro" in resultado:
         return resultado #3 não cria sessão, deu erro.
-    session["usuario"] = resultado["usuario"]["conta"]
+    session["conta"] = resultado["conta"]
     #4 guarda quem está logado
     return {"msg":"Sessão iniciada com sucesso!"}
     
