@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Daniel's Bank</title>
+</head>
+<body>
+    <div><h1>Bem vindo ao LinsBank</h1></div>
+    <div><h5>Entre com sua conta para acessar</h5></div>
+    <div>
+        <form action="/login" method="POST">
+        <label>Usuário:</label>
+        <input type="text" name="login" placeholder="Digite seu Login">
+        <br>
+        <label>Senha:</label>
+        <input type="password" name="senha" placeholder="Digite sua senha">
+        <button type="submit">Entrar</button>
+      </form>
+      {% if mensagem_erro %}
+      <p style="color: red">{{mensagem_erro}}</p>
+      {%endif%}
+      {% if mensagem_sucesso %}
+      <p style="color: green">{{mensagem_sucesso}}</p>
+      {%endif%}
+      <p>Ainda não é cliente?</p>
+      <a href="/cadastrar">Crie uma conta agora</a>
+    </div>
+</body>
+</html>

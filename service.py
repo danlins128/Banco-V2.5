@@ -5,7 +5,7 @@ class ContaService:
   def cadastrar(self, nome, login, senha):
     usuario = self.repo.buscar_por_login(login)
     if usuario:
-      return{"msg": "Usuario já cadastrado"}
+      return{"erro": "Usuario já cadastrado"}
       
     from usuario import Usuarios
     novo = Usuarios(nome, login, senha)
@@ -21,7 +21,10 @@ class ContaService:
     if senha != usuario.senha:
       return {"erro": "Usuário ou senha inválido!"}
     
-    return {"msg": f"Seja bem-vindo {usuario.nome}!",
-        "conta": usuario.conta
+    return {
+      "nome":usuario.nome,
+      "conta":usuario.conta
     }
-    
+
+  def saldo(self, conta):
+     pass
