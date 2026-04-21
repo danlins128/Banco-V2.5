@@ -7,6 +7,13 @@ app.secret_key = "Secret_Key"
 repo = UsuarioRepository()
 service= ContaService(repo)
 
+@app.template_filter('dinheiro')
+def format_dinheiro(valor):
+  try:
+   return f"{valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+  except (ValueError, TypeError):
+    return "0.00"
+    
 @app.route("/")
 def home():
     return render_template("index.html")
@@ -36,6 +43,7 @@ def login():
         return render_template("index.html", mensagem_erro=resultado["erro"]) #3 não cria sessão, deu erro.
     session["conta"] = resultado["conta"]
     session["nome"] = resultado["nome"]
+    session["saldo"] = resultado["saldo"]
     #4 guarda quem está logado
     return redirect(url_for("menu")) # redireciona se login for efetuado
     

@@ -23,7 +23,8 @@ class ContaService:
     
     return {
       "nome":usuario.nome,
-      "conta":usuario.conta
+      "conta":usuario.conta,
+      "saldo":usuario.saldo
     }
 
   def saldo(self, conta):

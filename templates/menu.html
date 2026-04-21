@@ -20,44 +20,47 @@
         <p class="text-1xl">Sua conta: {{session["conta"]}}</p>
         <p class="mt-4">O que gostaria de fazer hoje?</p>
       </section>
-      <div class="flex justify-center">
+  
+      <div class="flex justify-center mx-2">
         <div class="border-2 border-black rounded-2xl min-w-full p-4 text-left">
         <h3 class="font-medium">Saldo:</h3>
-        <p class="font-bold text-4xl">R$ 1.500,00</p>
+        <p class="font-bold text-4xl">R$ {{session["saldo"] | dinheiro}}</p>
         </div>
       </div>
-      <nav class="grid grid-cols-3 gap-4 mt-8 p-4">
+      <nav class="grid grid-cols-3 gap-4 mt-6 p-4">
         <div class=" flex flex-col items-center justify-center border-2 border-black rounded-2xl p-4 aspect-square">
           <img class="object-contain"src="/static/depositar.png">
-          <a>Depositar</a>
+          <button>Depositar</button>
         </div>
         <div class="flex flex-col items-center justify-center border-2 border-black rounded-2xl p-4 aspect-square">
           <img class="object-contain"src="/static/saque.png">
-          <a>Sacar</a>
+          <button>Sacar</button>
         </div>
         <div class="flex flex-col items-center justify-center border-2 border-black rounded-2xl p-4 aspect-square">
           <img class="object-contain"src="/static/transferir.png">
-          <a>Transferir</a>
+          <button>Transferir</button>
         </div>
         <div class="flex flex-col items-center justify-center border-2 border-black rounded-2xl p-5 aspect-square">
           <img class="object-contain"src="/static/extrato.png">
-          <a>Extrato</a>
+          <button>Extrato</button>
         </div>
         <div class="flex flex-col items-center justify-center border-2 border-black rounded-2xl p-4 aspect-square">
           <img class="object-contain"src="/static/pagamento.png">
-          <a>Pagamentos</a>
+          <button>Pagamentos</button>
         </div>
         <div class="flex flex-col items-center justify-center border-2 border-black rounded-2xl p-4 aspect-square">
           <img class="object-contain"src="/static/cartao.png">
-          <a>Cartões</a>
+          <button>Cartões</button>
         </div>
       </nav>
     </div>
   </div>
   <footer>
-    <div class="border-2 border-red-500 rounded-3xl text-center text-red-500 mt-8 p-4">
-    <a href="/logout">Sair</a>
+    <div class="relative rounded-3xl text-center text-red-600 mt-8 mx-3 shadow-lg p-4 bg-red-300 hover:bg-red-200">
+    <a class="absolute inset-0 z-10"href="/logout"></a>
+    <span>Sair</span>
     </div>
   </footer>
+
 </body>
 </html>

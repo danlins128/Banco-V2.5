@@ -7,12 +7,15 @@
   <title>Daniel's Bank</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-100 to-violet-100;">
+<body class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-100 to-violet-100 p-10">
   <div class="w-full max-w-md rounded-2xl shadow-xl p-8 bg-white">
-  <div><h1 class="text-3xl font-bold">Faça parte do LinsBank</h1></div>
-    <div class="text-base font-semibold flex-text-center pb-8"><h5>Entre com seus dados para se cadastar</h5></div>
+    <div class="flex">
+      <h1 class="text-3xl font-bold mb-4 tracking-wide">Faça parte do LinsBank</h1>
+      <img class="w-32 h-32 ml-2 mb-2"src="/static/Logobank.png">
+      </div>
+    <div class="text-base font-semibold flex-text-center pb-5"><h5>Entre com seus dados para se cadastar</h5></div>
     <div>
-        <form class="flex flex-col gap-0" action="/cadastrar" method="POST">
+        <form class="flex flex-col" action="/cadastrar" method="POST">
         <label>Usuário:</label>
         <input class="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-100" type="text" name="nome" placeholder="Digite: Seu Nome">
         <br>
@@ -24,7 +27,7 @@
         <button class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-md mt-2" type="submit">Cadastrar</button>
       </form>
       <p class="py-3 mx-2">Já é cliente?</p>
-      <a class="border border-gray-100 bg-violet rounded-lg shadow-lg p-2 hover:bg-gray-100" href="/">Entre agora</a>
+      <a class="border border-gray-100 bg-violet rounded-lg shadow-lg p-2 hover:bg-gray-100 inline-block" href="/">Entre agora</a>
     </div>
   </div>
 </body>
