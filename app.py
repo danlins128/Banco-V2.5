@@ -28,7 +28,7 @@ def cadastro():
   senha = data.get("senha")
   resultado = service.cadastrar(nome, login, senha)
   if "erro" in resultado:
-    return render_template("index.html", mensagem_erro=resultado["erro"])
+    return render_template("cadastrar.html", mensagem_erro=resultado["erro"])
   if "msg" in resultado:
     return render_template("index.html", mensagem_sucesso=resultado["msg"])
     

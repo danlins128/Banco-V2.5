@@ -6,10 +6,13 @@ class ContaService:
     usuario = self.repo.buscar_por_login(login)
     if usuario:
       return{"erro": "Usuario já cadastrado"}
-      
+    
     from usuario import Usuarios
     novo = Usuarios(nome, login, senha)
-    
+    if novo.nome is "" or novo.login is "" or novo.senha is "":
+        return{"erro": "Preencha todos os campos"}
+
+
     self.repo.cadastrar(novo)
     return{"msg": "Cadastro efetuado com sucesso!"}
     
