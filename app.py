@@ -53,6 +53,14 @@ def menu():
     return render_template("index.html")
   return render_template("menu.html")
   
+@app.route("/menu/deposito")
+def menu_deposito():
+  return render_template("/partials/deposito.html")
+
+@app.route("/menu/saque", methods=["GET", "POST"])
+def menu_saque():
+    return render_template("/saque.html")
+  
 @app.route("/logout")
 def logout():
   session.clear()
