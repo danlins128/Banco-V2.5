@@ -26,6 +26,12 @@
         <input class="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-1 focus:ring-purple-500" type="password" name="senha" placeholder="Digite sua senha">
         <button class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-md mt-2" type="submit">Cadastrar</button>
       </form>
+            {% if mensagem_erro %}
+            <p style="color: red">{{mensagem_erro}}</p>
+            {%endif%}
+            {% if mensagem_sucesso %}
+            <p style="color: green">{{mensagem_sucesso}}</p>
+            {%endif%}
       <p class="py-3 mx-2">Já é cliente?</p>
       <a class="border border-gray-100 bg-violet rounded-lg shadow-lg p-2 hover:bg-gray-100 inline-block" href="/">Entre agora</a>
     </div>
