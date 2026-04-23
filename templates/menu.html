@@ -64,8 +64,8 @@
       <div 
         id="saldo" 
         hx-get="/saldo" 
-        hx-trigger="load"
-        hx-swap="outerHTML"
+        hx-trigger="load, atualizarSaldo from:body"
+        hx-swap="innerHTML"
         class="flex justify-center mx-2">
         <div class="border-2 border-black rounded-2xl min-w-full p-4 text-left">
             <p class="animate-bounce pt-4">Carregando...</p>
@@ -74,18 +74,19 @@
       
       <nav class="grid grid-cols-3 gap-4 mt-6 p-4">
         <div class=" flex flex-col items-center justify-center border-2 border-black rounded-2xl p-4 aspect-square">
-          <button hx-get="/menu/deposito"
-            hx-target="body"
-            hx-trigger="click"
-            hx-swap="beforeend"
+          <button 
+            hx-get="/menu/deposito"
+            hx-target="#conteudo_dinamico"
+            hx-swap="innerHTML"
             class="w-full h-full active:scale-90 transition-transform">
             <img class="object-contain"src="/static/depositar.png"><span>Depositar</span></button>
         </div>
         <div class="flex flex-col items-center justify-center border-2 border-black rounded-2xl p-4 aspect-square">
-          <button hx-get="/menu/saque"
-hx-target="#conteudo_dinamico"
-hx-swap="innerHTML"
-class="w-full h-full active:scale-90 transition-transform"><img class="object-contain"src="/static/saque.png"><span>Sacar</span></button>
+          <button 
+            hx-get="/menu/saque"
+            hx-target="#conteudo_dinamico"
+            hx-swap="innerHTML"
+            class="w-full h-full active:scale-90 transition-transform"><img class="object-contain"src="/static/saque.png"><span>Sacar</span></button>
         </div>
         <div class="flex flex-col items-center justify-center border-2 border-black rounded-2xl p-5 aspect-square">
           <button class="w-full h-full active:scale-90 transition-transform"><img class="object-contain"src="/static/transferir.png"><span>Transferir</span></button>

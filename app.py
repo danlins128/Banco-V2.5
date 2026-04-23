@@ -1,4 +1,4 @@
-from flask import Flask, request, session, redirect, url_for, render_template
+from flask import Flask, request, session, redirect, url_for, render_template, make_response
 from repository import UsuarioRepository
 from service import ContaService
 
@@ -81,7 +81,10 @@ def deposito():
         return {"erro": "Usuário sem permissão"}
     valor = float(request.form.get("valor"))
     deposito = service.depositar(session["conta"], valor)
-    return render_template ("partials/saldo.html")
+    response = make_response(render_template ("partials/deposito_sucesso.html", valor=valor))
+    response.headers["HX-Trigger"]="atualizarSaldo"
+    print (response.headers)
+    return response
     
 if __name__ == "__main__":
     app.run(debug=True)

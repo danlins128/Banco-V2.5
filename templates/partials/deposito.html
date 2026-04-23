@@ -8,8 +8,8 @@
         
 <form 
 hx-post="/deposito"
-hx-target="#saldo"
-hx-swap="outerHTML"
+hx-target="#conteudo_dinamico"
+hx-swap="innerHTML"
 class="flex flex-col">
 <label class="text-gray-400 text-xs font-bold uppercase">Valor</label>
 <input
@@ -17,13 +17,16 @@ type="number"
 name="valor"
 placeholder="R$ 0,00"
 class="w-full border-b p-3 text-4xl py-2 font-bold text-gray-500 outline-none">
-
-<button type="submit"class="bg-purple-600 text-white p-3 rounded-xl m-4">
+<button 
+hx-target="#conteudo_dinamico" 
+hx-swap="innerHTML"
+hx-disabled-elt="this"
+hx-indicator="#loading"
+type="submit"class="bg-purple-600 text-white p-3 rounded-xl m-4 active:scale-80 transition-transform">
 Confirmar Depósito
 </button>
 </form>
-
-        <button onclick="document.getElementById('modal-deposito').remove()" class="w-full text-gray-400 mt-6 font-bold uppercase text-xs tracking-widest">
+<button onclick="document.getElementById('modal-deposito').remove()" class="w-full text-gray-400 mt-6 font-bold uppercase text-xs tracking-widest active:scale-95 transition-transform">
             Voltar
         </button>
     </div>

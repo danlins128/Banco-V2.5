@@ -1,0 +1,21 @@
+<div id="modal-deposito_sucesso" class="modal-fixo">
+    <div class="fundo-escuro" onclick="document.getElementById('modal-deposito_sucesso').remove()"></div>
+
+    <div class="folha-menu flex flex-col">
+        <div class="w-full text-5xl mb-8 justify-center items-center">&#9989;</div>
+        <h2 class="text-3xl font-bold text-gray-800 mb-6">Depósito realizado com sucesso</h2>
+<p>Valor: R$ {{valor}}</p>
+<div class="flex gap-4">
+<button
+hx-get="/menu/deposito"
+hx-target="body"
+hx-swap="beforeend"
+class="bg-purple-600 text-white px-4 py-2 rounded-xl w-full"
+>Nova transação
+</button>
+      <button 
+        onclick="document.querySelector('.modal-fixo').remove()"
+        class="bg-gray-300 px-4 py-2 rounded-xl w-full">
+        Voltar
+      </button>
+</div>
