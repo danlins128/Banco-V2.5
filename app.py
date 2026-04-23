@@ -89,6 +89,23 @@ def deposito():
         response.headers["HX-Trigger"]="atualizarSaldo"
         
         return response
+@app.route("/sacar", methods=["POST"])
+def sacar():
+    if "conta" not in session:
+        return {"erro": "Usuário sem permissão"}
+    valor = request.form.get("valor")
+    if valor == "":
+        return {"erro": "Digite um valor válido no campo acima"}
+    else:
+        valor = float(valor)
+        resultado = service.sacar(session["conta"], valor)
+        if isinstance(resultado, dict) and "erro" in resultado:
+            return resultado
+        response = make_response(render_template ("partials/saque_sucesso.html", valor=valor))
+        response.headers["HX-Trigger"]="atualizarSaldo"
+        
+        return response
+
     
 if __name__ == "__main__":
     app.run(debug=True)

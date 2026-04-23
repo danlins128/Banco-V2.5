@@ -47,7 +47,8 @@
   <script src="https://unpkg.com/htmx.org@1.9.10"></script>
 
 </head>
-<body>
+<body class="flex flex-col justify-center items-center bg-gray-50">
+  <div class="w-full max-w-md border rounded-lg bg-white shadow-lg p-6">
   <header class="grid grid-cols-3 items-center m-1 ">
     <img  class="h-18 w-16" src="/static/Logobank.png" alt="Icone do usuário"> 
     <h2 class="flex justify-center text-3xl">LinsBank</h2>
@@ -67,7 +68,7 @@
         hx-trigger="load, atualizarSaldo from:body"
         hx-swap="innerHTML"
         class="flex justify-center mx-2">
-        <div class="border-2 border-black rounded-2xl min-w-full p-4 text-left">
+        <div class="border-2 border-black rounded-2xl min-w-full p-4 bg-gradient-to-b from-purple-400 to-purple-600 text-left text-white">
             <p class="animate-bounce pt-4">Carregando...</p>
         </div>
       </div>
@@ -78,7 +79,7 @@
             hx-get="/menu/deposito"
             hx-target="#conteudo_dinamico"
             hx-swap="innerHTML"
-            class="w-full h-full active:scale-90 transition-transform">
+            class="w-full h-full active:scale-90 hover:scale-105 transition-transform">
             <img class="object-contain"src="/static/depositar.png"><span>Depositar</span></button>
         </div>
         <div class="flex flex-col items-center justify-center border-2 border-black rounded-2xl p-4 aspect-square">
@@ -86,19 +87,19 @@
             hx-get="/menu/saque"
             hx-target="#conteudo_dinamico"
             hx-swap="innerHTML"
-            class="w-full h-full active:scale-90 transition-transform"><img class="object-contain"src="/static/saque.png"><span>Sacar</span></button>
+            class="w-full h-full active:scale-90 hover:scale-105 transition-transform"><img class="object-contain"src="/static/saque.png"><span>Sacar</span></button>
         </div>
         <div class="flex flex-col items-center justify-center border-2 border-black rounded-2xl p-5 aspect-square">
-          <button class="w-full h-full active:scale-90 transition-transform"><img class="object-contain"src="/static/transferir.png"><span>Transferir</span></button>
+          <button class="w-full h-full active:scale-90 hover:scale-105 transition-transform"><img class="object-contain"src="/static/transferir.png"><span>Transferir</span></button>
         </div>
         <div class="flex flex-col items-center justify-center border-2 border-black rounded-2xl p-5 aspect-square">
-          <button class="w-full h-full active:scale-90 transition-transform"><img class="object-contain w-16"src="/static/extrato.png"><span>Extrato</span></button>
+          <button class="w-full h-full active:scale-90 hover:scale-105  transition-transform"><img class="object-contain w-16 p-2"src="/static/extrato.png"><span>Extrato</span></button>
         </div>
         <div class="flex flex-col items-center  border-2 border-black rounded-2xl p-5 aspect-square">
-          <button class="w-full h-full active:scale-90 transition-transform"><img class="object-contain w-16"src="/static/pagamento.png"><span>Pagamentos</span></button>
+          <button class="w-full h-full active:scale-90 hover:scale-105 transition-transform"><img class="object-contain w-16 p-2"src="/static/pagamento.png"><span>Pagamentos</span></button>
         </div>
         <div class="flex flex-col items-center justify-center border-2 border-black rounded-2xl p-5 aspect-square">
-          <button class="w-full h-full active:scale-90 transition-transform">   <img class="object-contain w-16 "src="/static/cartao.png"><span>Cartões</span></button>
+          <button class="w-full h-full active:scale-90 hover:scale-105 transition-transform">   <img class="object-contain w-16 p-2"src="/static/cartao.png"><span>Cartões</span></button>
         </div>
       </nav>
     </div>
@@ -109,8 +110,9 @@
     <span>Sair</span>
     </div>
   </footer>
-<div id="conteudo_dinamico">
+<div id="conteudo_dinamico" class="w-full -max-w-md justify-center items-center">
         <!-- div para sub menu-->
+</div>
 </div>
 </body>
 </html>

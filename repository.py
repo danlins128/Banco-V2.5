@@ -47,5 +47,7 @@ class UsuarioRepository:
     def atualizar_saldo(self, conta, valor):
         self.cursor.execute("""UPDATE usuarios SET saldo =? WHERE conta=?""", (valor,conta))
         self.conn.commit()
+
+
         
 

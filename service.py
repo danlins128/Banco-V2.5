@@ -38,3 +38,11 @@ class ContaService:
      valor += valor_atual
      self.repo.atualizar_saldo(conta, valor)
      return valor
+  
+  def sacar(self,conta ,valor):
+    valor_atual = self.repo.busca_saldo(conta)
+    if valor > valor_atual:
+      return {"erro": "Saldo insuficiente!"}
+    valor_atual -= valor
+    self.repo.atualizar_saldo(conta, valor_atual)
+    return valor_atual

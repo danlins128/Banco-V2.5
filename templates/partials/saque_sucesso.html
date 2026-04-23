@@ -2,20 +2,19 @@
     <div class="fundo-escuro" onclick="document.getElementById('modal-deposito_sucesso').remove()"></div>
 
     <div class="folha-menu max-w-md w-full flex flex-col justify-center items-center">
-      <h2 class="text-3xl font-bold text-gray-800 mb-6">Depósito realizado com sucesso</h2>
+      <h2 class="text-3xl font-bold text-gray-800 mb-6">Saque realizado com sucesso</h2>
         <div class="w-full text-8xl mb-8 grid row justify-center items-center transition-transform animate-bounce">&#9989;</div>
 <p class="text-2xl font-bold m-4">Valor: R$ {{valor}}</p>
 <div class="flex gap-8">
 <button
-hx-get="/menu/deposito"
-hx-target="body"
-hx-swap="beforeend"
-class="bg-purple-600 text-white px-4 py-2 rounded-xl w-full active:scale-80 transition-transform hover:bg-purple-800"
->Nova transação
+hx-get="/menu/saque"
+class="bg-purple-600 text-white p-3 rounded-xl m-4"
+>
+Voltar
 </button>
-      <button 
-        onclick="document.querySelector('.modal-fixo').remove()"
-        class="bg-gray-300 px-4 py-2 rounded-xl w-full active:scale-80 transition-transform hover:bg-gray-400">
-        Voltar
-      </button>
+        <button 
+            onclick="document.querySelector('.modal-fixo').remove()"
+            class="bg-gray-300 px-4 py-2 rounded-xl w-full active:scale-80 transition-transform hover:bg-gray-400">
+            Voltar
+        </button>
 </div>
