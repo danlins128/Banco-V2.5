@@ -47,65 +47,68 @@
   <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js"></script>
 
 </head>
-<body>
-  <header class="grid grid-cols-3 items-center m-1 ">
-    <img  class="h-18 w-16" src="/static/Logobank.png" alt="Icone do usuário"> 
-    <h2 class="flex justify-center text-3xl">LinsBank</h2>
-  </header>
-  <hr>
-  <div class="flex-auto">
+<body class="flex flex-col justify-center items-center bg-gray-50">
+  <div class="w-full max-w-md border rounded-lg bg-white shadow-lg p-6">
+    <header class="grid grid-cols-3 items-center m-1 ">
+      <img  class="h-18 w-16" src="/static/Logobank.png" alt="Icone do usuário">
+      <h2 class="flex justify-center text-3xl">LinsBank</h2>
+    </header>
+    <hr>
     <div class="flex-auto">
-      <section class="m-2">
-         <h3 class="text-4xl">Olá, {{session["nome"]}}</h3>
-        <p class="text-1xl">Sua conta: {{session["conta"]}}</p>
-        <p class="mt-4">O que gostaria de fazer hoje?</p>
-      </section>
-  
-      <div class="flex justify-center mx-2">
-        <div class="border-2 border-black rounded-2xl min-w-full p-4 text-left">
-        <h3 class="font-medium">Saldo:</h3>
-        <p class="font-bold text-4xl">R$ {{session["saldo"] | dinheiro}}</p>
+      <div class="flex-auto">
+        <section class="m-2">
+           <h3 class="text-4xl">Olá, {{session["nome"]}}</h3>
+          <p class="text-1xl">Sua conta: {{session["conta"]}}</p>
+          <p class="mt-4">O que gostaria de fazer hoje?</p>
+        </section>
+    
+        <div class="flex justify-center mx-2">
+          <div class="border-2 border-black rounded-2xl min-w-full p-4 text-left">
+          <h3 class="font-medium">Saldo:</h3>
+          <p class="font-bold text-4xl">R$ {{session["saldo"] | dinheiro}}</p>
+          </div>
         </div>
+    
+        <nav class="grid grid-cols-3 gap-4 mt-6 p-4">
+          <div class=" flex flex-col items-center justify-center border-2 border-black rounded-2xl p-4 aspect-square">
+            <button hx-get="/menu/deposito"
+              hx-target="body"
+              hx-trigger="click"
+              hx-swap="beforeend"
+              class="w-full h-full active:scale-90 transition-transform">
+              <img class="object-contain"src="/static/depositar.png"><span>Depositar</span></button>
+          </div>
+          <div class="flex flex-col items-center justify-center border-2 border-black rounded-2xl p-4 aspect-square">
+            <button hx-get="/menu/saque"
+    hx-target="#conteudo_dinamico"
+    hx-swap="innerHTML"
+    class="w-full h-full active:scale-90 transition-transform"><img class="object-contain"src="/static/saque.png"><span>Sacar</span></button>
+          </div>
+          <div class="flex flex-col items-center justify-center border-2 border-black rounded-2xl p-5 aspect-square">
+            <button class="w-full h-full active:scale-90 transition-transform"><img class="object-contain"src="/static/transferir.png"><span>Transferir</span></button>
+          </div>
+          <div class="flex flex-col items-center justify-center border-2 border-black rounded-2xl p-5 aspect-square">
+            <button class="w-full h-full active:scale-90 transition-transform"><img class="object-contain w-16"src="/static/extrato.png"><span>Extrato</span></button>
+          </div>
+          <div class="flex flex-col items-center  border-2 border-black rounded-2xl p-5 aspect-square">
+            <button class="w-full h-full active:scale-90 transition-transform"><img class="object-contain w-16"src="/static/pagamento.png"><span>Pagamentos</span></button>
+          </div>
+          <div class="flex flex-col items-center justify-center border-2 border-black rounded-2xl p-5 aspect-square">
+            <button class="w-full h-full active:scale-90 transition-transform">   <img class="object-contain w-16 "src="/static/cartao.png"><span>Cartões</span></button>
+          </div>
+        </nav>
       </div>
-      
-      <nav class="grid grid-cols-3 gap-4 mt-6 p-4">
-        <div class=" flex flex-col items-center justify-center border-2 border-black rounded-2xl p-4 aspect-square">
-          <button hx-get="/menu/deposito"
-            hx-target="body"
-            hx-trigger="click"
-            hx-swap="beforeend"
-            class="w-full h-full active:scale-90 transition-transform">
-            <img class="object-contain"src="/static/depositar.png"><span>Depositar</span></button>
-        </div>
-        <div class="flex flex-col items-center justify-center border-2 border-black rounded-2xl p-4 aspect-square">
-          <button hx-get="/menu/saque"
-hx-target="#conteudo_dinamico"
-hx-swap="innerHTML"
-class="w-full h-full active:scale-90 transition-transform"><img class="object-contain"src="/static/saque.png"><span>Sacar</span></button>
-        </div>
-        <div class="flex flex-col items-center justify-center border-2 border-black rounded-2xl p-5 aspect-square">
-          <button class="w-full h-full active:scale-90 transition-transform"><img class="object-contain"src="/static/transferir.png"><span>Transferir</span></button>
-        </div>
-        <div class="flex flex-col items-center justify-center border-2 border-black rounded-2xl p-5 aspect-square">
-          <button class="w-full h-full active:scale-90 transition-transform"><img class="object-contain w-16"src="/static/extrato.png"><span>Extrato</span></button>
-        </div>
-        <div class="flex flex-col items-center  border-2 border-black rounded-2xl p-5 aspect-square">
-          <button class="w-full h-full active:scale-90 transition-transform"><img class="object-contain w-16"src="/static/pagamento.png"><span>Pagamentos</span></button>
-        </div>
-        <div class="flex flex-col items-center justify-center border-2 border-black rounded-2xl p-5 aspect-square">
-          <button class="w-full h-full active:scale-90 transition-transform">   <img class="object-contain w-16 "src="/static/cartao.png"><span>Cartões</span></button>
-        </div>
-      </nav>
+    </div>
+    <footer>
+      <div class="relative rounded-3xl text-center text-red-600 mt-8 mx-3 shadow-lg p-4 bg-red-300 hover:bg-red-200">
+      <a class="absolute inset-0 z-10"href="/logout"></a>
+      <span>Sair</span>
+      </div>
+    </footer>
+    <div id="conteudo_dinamico" class="w-full -max-w-md justify-center items-center">
+          <!-- div para sub menu-->
     </div>
   </div>
-  <footer>
-    <div class="relative rounded-3xl text-center text-red-600 mt-8 mx-3 shadow-lg p-4 bg-red-300 hover:bg-red-200">
-    <a class="absolute inset-0 z-10"href="/logout"></a>
-    <span>Sair</span>
-    </div>
-  </footer>
-<div id="conteudo_dinamico">
-        <!-- div para sub menu-->
-</div>
+  <script src="/static/js/app.js"></script>
 </body>
 </html>

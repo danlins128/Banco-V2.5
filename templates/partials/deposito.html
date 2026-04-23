@@ -1,17 +1,17 @@
-<div id="modal-deposito" class="modal-fixo">
+<div id="modal-deposito" class="modal-fixo flex items-center justify-center">
     <div class="fundo-escuro" onclick="document.getElementById('modal-deposito').remove()"></div>
 
-    <div class="folha-menu">
+    <div class="folha-menu max-w-md w-full flex flex-col justify-center items-center">
         <div class="w-12 h-1 bg-gray-200 mx-auto rounded mb-8"></div>
         
         <h2 class="text-3xl font-bold text-gray-800 mb-6">Depósito</h2>
         
         <div class="mb-6">
             <label class="text-gray-400 text-xs font-bold uppercase">Valor</label>
-            <input type="number" placeholder="R$ 0,00" class="w-full text-4xl font-bold py-2 outline-none border-b">
+            <input id="valor-deposito" name="valor-deposito" type="number" placeholder="R$ 0,00" class="w-full text-4xl font-bold py-2 outline-none border-b">
         </div>
 
-        <button class="w-full bg-purple-600 text-white font-bold py-4 rounded-2xl text-xl shadow-lg active:scale-95 transition-transform">
+        <button onclick="depositar()" class="w-full bg-purple-600 text-white font-bold py-4 rounded-2xl text-xl shadow-lg active:scale-95 transition-transform">
             Confirmar
         </button>
 

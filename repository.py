@@ -40,7 +40,7 @@ class UsuarioRepository:
               break
     def busca_saldo(self, conta):
         self.cursor.execute("""
-        SELECT saldo FROM usuarios WHERE conta=?""", (conta))
+        SELECT saldo FROM usuarios WHERE conta=?""", (conta,))
         resultado = self.cursor.fetchone()
         if resultado:
             return resultado[0]

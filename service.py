@@ -17,6 +17,9 @@ class ContaService:
     return{"msg": "Cadastro efetuado com sucesso!"}
     
   def login(self, login, senha):
+    if not login or not senha:
+        return {"erro": "Preencha todos os campos"}
+    
     usuario = self.repo.buscar_por_login(login)
     
     if usuario is None:
@@ -25,10 +28,14 @@ class ContaService:
       return {"erro": "Usuário ou senha inválido!"}
     
     return {
+      "success": True,
       "nome":usuario.nome,
       "conta":usuario.conta,
-      "saldo":usuario.saldo
     }
 
-  def saldo(self, conta):
-     pass
+  def atualizar_saldo(self, conta):
+    saldo_atual = self.repo.busca_saldo(conta)
+    if saldo_atual is not None:
+        self.repo.atualizar_saldo(conta, saldo_atual)
+        return {"msg": "Saldo atualizado com sucesso!"}
+    return {"erro": "Conta não encontrada!"}
