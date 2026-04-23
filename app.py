@@ -79,12 +79,16 @@ def ver_saldo():
 def deposito():
     if "conta" not in session:
         return {"erro": "Usuário sem permissão"}
-    valor = float(request.form.get("valor"))
-    deposito = service.depositar(session["conta"], valor)
-    response = make_response(render_template ("partials/deposito_sucesso.html", valor=valor))
-    response.headers["HX-Trigger"]="atualizarSaldo"
-    print (response.headers)
-    return response
+    valor = request.form.get("valor")
+    if valor == "":
+        return {"erro": "Digite um valor válido no campo acima"}
+    else:
+        valor = float(valor)
+        deposito = service.depositar(session["conta"], valor)
+        response = make_response(render_template ("partials/deposito_sucesso.html", valor=valor))
+        response.headers["HX-Trigger"]="atualizarSaldo"
+        
+        return response
     
 if __name__ == "__main__":
     app.run(debug=True)
