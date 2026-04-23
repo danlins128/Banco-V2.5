@@ -40,8 +40,12 @@ class UsuarioRepository:
               break
     def busca_saldo(self, conta):
         self.cursor.execute("""
-        SELECT saldo FROM usuarios WHERE conta=?""", (conta))
+        SELECT saldo FROM usuarios WHERE conta=?""", (conta,))
         resultado = self.cursor.fetchone()
-        if resultado:
-            return resultado[0]
-        return None
+        return resultado [0] if resultado else 0
+
+    def atualizar_saldo(self, conta, valor):
+        self.cursor.execute("""UPDATE usuarios SET saldo =? WHERE conta=?""", (valor,conta))
+        self.conn.commit()
+        
+

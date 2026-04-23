@@ -6,14 +6,22 @@
         
         <h2 class="text-3xl font-bold text-gray-800 mb-6">Depósito</h2>
         
-        <div class="mb-6">
-            <label class="text-gray-400 text-xs font-bold uppercase">Valor</label>
-            <input type="number" placeholder="R$ 0,00" class="w-full text-4xl font-bold py-2 outline-none border-b">
-        </div>
+<form 
+hx-post="/deposito"
+hx-target="#saldo"
+hx-swap="outerHTML"
+class="flex flex-col">
+<label class="text-gray-400 text-xs font-bold uppercase">Valor</label>
+<input
+type="number"
+name="valor"
+placeholder="R$ 0,00"
+class="w-full border-b p-3 text-4xl py-2 font-bold text-gray-500 outline-none">
 
-        <button class="w-full bg-purple-600 text-white font-bold py-4 rounded-2xl text-xl shadow-lg active:scale-95 transition-transform">
-            Confirmar
-        </button>
+<button type="submit"class="bg-purple-600 text-white p-3 rounded-xl m-4">
+Confirmar Depósito
+</button>
+</form>
 
         <button onclick="document.getElementById('modal-deposito').remove()" class="w-full text-gray-400 mt-6 font-bold uppercase text-xs tracking-widest">
             Voltar

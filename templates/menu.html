@@ -44,7 +44,7 @@
   }
 </style>
 
-  <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js"></script>
+  <script src="https://unpkg.com/htmx.org@1.9.10"></script>
 
 </head>
 <body>
@@ -61,10 +61,14 @@
         <p class="mt-4">O que gostaria de fazer hoje?</p>
       </section>
   
-      <div class="flex justify-center mx-2">
+      <div 
+        id="saldo" 
+        hx-get="/saldo" 
+        hx-trigger="load"
+        hx-swap="outerHTML"
+        class="flex justify-center mx-2">
         <div class="border-2 border-black rounded-2xl min-w-full p-4 text-left">
-        <h3 class="font-medium">Saldo:</h3>
-        <p class="font-bold text-4xl">R$ {{session["saldo"] | dinheiro}}</p>
+            <p class="animate-bounce pt-4">Carregando...</p>
         </div>
       </div>
       

@@ -31,4 +31,10 @@ class ContaService:
     }
 
   def saldo(self, conta):
-     pass
+     return self.repo.busca_saldo(conta)
+  
+  def depositar(self, conta, valor):
+     valor_atual = self.repo.busca_saldo(conta)
+     valor += valor_atual
+     self.repo.atualizar_saldo(conta, valor)
+     return valor

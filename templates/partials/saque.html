@@ -1,4 +1,4 @@
-<div class="modal-fixo">
+<div id="modal-saque" class="modal-fixo">
 <div class="fundo-escuro" onclick="this.parentElement.remove()"></div>
 <div class="folha-menu">
 <div class="w-12 h-1 bg-gray-200 mx-auto rounded mb-8"></div>
@@ -21,8 +21,8 @@ class="w-full border-b p-3 text-4xl py-2 font-bold text-gray-500 outline-none">
 Confirmar saque
 </button>
 </form>
-<button onclick="this.closest('.modal-fixo').remove()" class="mt-4 text-gray-500 text-lg bg-gray-50 rounded-lg py-2 px-4">
-Voltar
-</button>
+<button onclick="document.getElementById('modal-saque').remove()" class="w-full text-gray-400 mt-6 font-bold uppercase text-xs tracking-widest">
+            Voltar
+        </button>
 </div>
 </div>

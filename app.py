@@ -59,21 +59,29 @@ def menu_deposito():
 
 @app.route("/menu/saque", methods=["GET", "POST"])
 def menu_saque():
-    return render_template("/saque.html")
+    return render_template("/partials/saque.html")
   
 @app.route("/logout")
 def logout():
   session.clear()
   return redirect(url_for("home"))
     
-@app.route("/saldo", methods=["GET"])
+@app.route("/saldo")
 def ver_saldo():
     if "conta" not in session:
         return {"erro": "Usuário não logado"}
         
-    saldo = repo.busca_saldo(session["conta"])
-    return {"saldo":saldo}
+    saldo = service.saldo(session["conta"])
+    session["saldo"] = saldo
     
+    return render_template("partials/saldo.html")
+@app.route("/deposito", methods=["POST"])
+def deposito():
+    if "conta" not in session:
+        return {"erro": "Usuário sem permissão"}
+    valor = float(request.form.get("valor"))
+    deposito = service.depositar(session["conta"], valor)
+    return render_template ("partials/saldo.html")
     
 if __name__ == "__main__":
     app.run(debug=True)
