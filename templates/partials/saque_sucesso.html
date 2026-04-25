@@ -7,14 +7,9 @@
 <p class="text-2xl font-bold m-4">Valor: R$ {{valor}}</p>
 <div class="flex gap-8">
 <button
-hx-get="/menu/saque"
-class="bg-purple-600 text-white p-3 rounded-xl m-4"
+onclick="document.querySelector('.modal-fixo').remove()"
+class="bg-purple-600 text-white p-3 rounded-xl m-4 w-full active:scale-80 transition-transform hover:bg-purple-800"
 >
 Voltar
 </button>
-        <button 
-            onclick="document.querySelector('.modal-fixo').remove()"
-            class="bg-gray-300 px-4 py-2 rounded-xl w-full active:scale-80 transition-transform hover:bg-gray-400">
-            Voltar
-        </button>
 </div>
