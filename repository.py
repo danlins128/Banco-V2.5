@@ -11,13 +11,15 @@ class UsuarioRepository:
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             conta INTEGER UNIQUE,
             nome TEXT,
+            sobrenome TEXT,
+            email TEXT UNIQUE,
             login TEXT UNIQUE,
             senha TEXT,
             saldo REAL DEFAULT 0)""")
         self.conn.commit()
 
     def buscar_por_login(self, login):
-      self.cursor.execute("""SELECT nome, login, senha, saldo, conta FROM usuarios WHERE login =
+      self.cursor.execute("""SELECT nome, sobrenome, email, login, senha, saldo, conta FROM usuarios WHERE login =
       ?""",
       (login,))
       dados = self.cursor.fetchone()
@@ -33,11 +35,12 @@ class UsuarioRepository:
           resultado = self.cursor.fetchone()
           if resultado is None:
               self.cursor.execute("""INSERT INTO usuarios
-              (conta,nome,login,senha,saldo) VALUES (?,?,?,?,?)""",
-              (gerar_conta, usuario.nome, usuario.login, usuario.senha,
+              (conta, nome, sobrenome, email, login, senha, saldo) VALUES (?,?,?,?,?,?,?)""",
+              (gerar_conta, usuario.nome, usuario.sobrenome, usuario.email, usuario.login, usuario.senha,
               usuario.saldo))
               self.conn.commit()
               break
+          
     def busca_saldo(self, conta):
         self.cursor.execute("""
         SELECT saldo FROM usuarios WHERE conta=?""", (conta,))

@@ -2,16 +2,15 @@ class ContaService:
   def __init__(self, repo):
     self.repo = repo
     
-  def cadastrar(self, nome, login, senha):
-    usuario = self.repo.buscar_por_login(login)
+  def cadastrar(self, nome, sobrenome, email, login, senha):
+    usuario = self.repo.buscar_por_login(email, login)
     if usuario:
       return{"erro": "Usuario já cadastrado"}
     
     from usuario import Usuarios
-    novo = Usuarios(nome, login, senha)
-    if novo.nome is "" or novo.login is "" or novo.senha is "":
+    novo = Usuarios(nome, sobrenome, email, login, senha)
+    if novo.nome == "" or novo.login == "" or novo.senha == "":
         return{"erro": "Preencha todos os campos"}
-
 
     self.repo.cadastrar(novo)
     return{"msg": "Cadastro efetuado com sucesso!"}

@@ -1,6 +1,7 @@
 from flask import Flask, request, session, redirect, url_for, render_template, make_response
 from repository import UsuarioRepository
 from service import ContaService
+from forms import CadastroForm, LoginForm
 
 app = Flask(__name__)
 app.secret_key = "Secret_Key"
@@ -14,38 +15,64 @@ def format_dinheiro(valor):
   except (ValueError, TypeError):
     return "0.00"
     
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 def home():
-    return render_template("index.html")
+    form = LoginForm()
+
+    if form.validate_on_submit():
+       resultado = service.login(
+          form.login.data,
+          form.senha.data
+       )
     
+       if "erro" in resultado:
+            return render_template("index.html", mensagem_erro=resultado["erro"]) #3 não cria sessão, deu erro.
+       session["conta"] = resultado["conta"]
+       session["nome"] = resultado["nome"]
+       session["saldo"] = resultado["saldo"]
+        #4 guarda quem está logado
+       return redirect(url_for("menu"))
+
+    return render_template('index.html', form=form)
+        
 @app.route("/cadastrar", methods=["GET", "POST"])
 def cadastro():
-  if request.method=="GET":
-    return render_template("cadastrar.html")
-  data = request.form
-  nome = data.get("nome")
-  login = data.get("login")
-  senha = data.get("senha")
-  resultado = service.cadastrar(nome, login, senha)
-  if "erro" in resultado:
-    return render_template("cadastrar.html", mensagem_erro=resultado["erro"])
-  if "msg" in resultado:
-    return render_template("index.html", mensagem_sucesso=resultado["msg"])
+  form = CadastroForm()
+
+  if form.validate_on_submit():
+     resultado = service.cadastrar(
+        form.nome.data,
+        form.sobrenome.data,
+        form.email.data,
+        form.login.data,
+        form.senha.data
+     )
+     if "erro" in resultado:
+        return render_template("cadastrar.html", form=form, erro=resultado["erro"])
+     return redirect(url_for('home'))
+     
+  return render_template("cadastrar.html", form=form)
+
     
 @app.route("/login", methods=["POST"])
 def login():
-    data = request.form #1 pega os dados
-    resultado = service.login(
-        data.get("login"),
-        data.get("senha")
-    )#2 usa o service.py
-    if "erro" in resultado:
-        return render_template("index.html", mensagem_erro=resultado["erro"]) #3 não cria sessão, deu erro.
-    session["conta"] = resultado["conta"]
-    session["nome"] = resultado["nome"]
-    session["saldo"] = resultado["saldo"]
-    #4 guarda quem está logado
-    return redirect(url_for("menu")) # redireciona se login for efetuado
+    form = LoginForm()
+
+    if form.validate_on_submit():
+       resultado = service.login(
+          form.login.data,
+          form.senha.data
+       )
+    
+       if "erro" in resultado:
+            return render_template("index.html", mensagem_erro=resultado["erro"]) #3 não cria sessão, deu erro.
+       session["conta"] = resultado["conta"]
+       session["nome"] = resultado["nome"]
+       session["saldo"] = resultado["saldo"]
+        #4 guarda quem está logado
+       return redirect(url_for("menu"))
+
+    return render_template('index.html', form=form) # redireciona se login for efetuado
     
 @app.route("/menu", methods=["GET"])
 def menu():
@@ -82,13 +109,13 @@ def deposito():
     valor = request.form.get("valor")
     if valor == "":
         return {"erro": "Digite um valor válido no campo acima"}
-    else:
-        valor = float(valor)
-        service.depositar(session["conta"], valor)
-        response = make_response(render_template ("partials/deposito_sucesso.html", valor=valor))
-        response.headers["HX-Trigger"]="atualizarSaldo"
+    
+    valor = float(valor)
+    service.depositar(session["conta"], valor)
+    response = make_response(render_template ("partials/deposito_sucesso.html", valor=valor))
+    response.headers["HX-Trigger"]="atualizarSaldo"
         
-        return response
+    return response
     
 @app.route("/saque", methods=["POST"])
 def sacar():

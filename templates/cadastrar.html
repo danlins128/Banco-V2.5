@@ -15,16 +15,53 @@
       </div>
     <div class="text-base font-semibold flex-text-center pb-5"><h5>Entre com seus dados para se cadastar</h5></div>
     <div>
-        <form class="flex flex-col" action="/cadastrar" method="POST">
-        <label>Usuário:</label>
-        <input class="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-1 focus:ring-purple-500" type="text" name="nome" placeholder="Digite: Seu Nome">
-        <br>
-        <label>Login:</label>
-        <input class="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-1 focus:ring-purple-500"   type="text" name="login" placeholder="Digite seu login">
-        <br>
-        <label>Senha:</label>
-        <input class="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-1 focus:ring-purple-500" type="password" name="senha" placeholder="Digite sua senha">
-        <button class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-md mt-2" type="submit">Cadastrar</button>
+        <form class="flex flex-col gap-3" action="/cadastrar" method="POST">
+          {{form.hidden_tag()}}
+
+          <div>
+            {{form.nome.label(class='font-semibold')}}
+            {{form.nome(class="w-full border rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-purple-400")}}
+            {% for erro in form.nome.errors %}
+            <p class="text-red-500 text-sm">{{erro}}</p>
+            {% endfor %}
+          </div>
+
+          <div>
+            {{form.sobrenome.label(class='font-semibold')}}
+            {{form.sobrenome(class="w-full border rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-purple-400")}}
+            {% for erro in form.sobrenome.errors %}
+            <p class="text-red-500 text-sm">{{erro}}</p>
+            {% endfor %}
+          </div>
+
+          <div>
+            {{form.email.label(class='font-semibold')}}
+            {{form.email(class="w-full border rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-purple-400")}}
+            {% for erro in form.email.errors %}
+            <p class="text-red-500 text-sm">{{erro}}</p>
+            {% endfor %}
+          </div>
+
+          <div>
+            {{form.login.label(class='font-semibold')}}
+            {{form.login(class="w-full border rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-purple-400")}}
+            {% for erro in form.login.errors %}
+            <p class="text-red-500 text-sm">{{erro}}</p>
+            {% endfor %}
+          </div>
+
+          <div>
+            {{form.senha.label(class='font-semibold')}}
+            {{form.senha(class="w-full border rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-purple-400")}}
+            {% for erro in form.senha.errors %}
+            <p class="text-red-500 text-sm">{{erro}}</p>
+            {% endfor %}
+          </div>
+        
+        <button class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-md mt-2"
+        type="submit">
+        Cadastrar
+      </button>
       </form>
             {% if mensagem_erro %}
             <p style="color: red">{{mensagem_erro}}</p>
