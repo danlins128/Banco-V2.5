@@ -53,6 +53,7 @@ def cadastro():
      if "erro" in resultado:
         return render_template("cadastrar.html", form=form, menssagem_erro=resultado["erro"])
      
+     flash('Usuário cadastrado com sucesso!', 'sucesso')
      return redirect(url_for('home'))
      
   return render_template("cadastrar.html", form=form)

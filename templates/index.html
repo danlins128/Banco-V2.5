@@ -17,6 +17,20 @@
               </div>
             <div class="text-base font-semibold flex-text-center pb-5"><h5>Entre com sua conta para acessar</h5></div>
             <div class="relative">
+                {% with mensagens = get_flashed_messages(with_categories=true)%}
+                    {% if mensagens %}
+                        {% for categoria, mensagem in mensagens %}
+
+                        <div class="
+                            p-3 mb-3 rounded-lg text-white text-center
+                            {% if categoria == 'sucesso' %} bg-green-500
+                            {% endif %}">
+                            {{ mensagem }}
+                        </div>
+
+                        {% endfor %}
+                    {% endif %}
+                    {% endwith %}
                 <form class="flex flex-col gap-3" action="" method="POST" novalidate>
                     {{form.hidden_tag()}}
 
