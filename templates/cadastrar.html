@@ -18,25 +18,26 @@
         <form class="flex flex-col gap-3" action="/cadastrar" method="POST" novalidate>
           {{form.hidden_tag()}}
 
-          <div>
-            {{form.nome.label(class='font-semibold')}}
-            {{form.nome(class="w-full border rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-purple-400")}}
-            {% for erro in form.nome.errors %}
-            <p class="text-red-500 text-sm">{{erro}}</p>
-            {% endfor %}
-          </div>
-
-          <div>
-            {{form.sobrenome.label(class='font-semibold')}}
-            {{form.sobrenome(class="w-full border rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-purple-400")}}
-            {% for erro in form.sobrenome.errors %}
-            <p class="text-red-500 text-sm">{{erro}}</p>
-            {% endfor %}
+          <div class="flex gap-3">
+            <div>
+              {{form.nome.label(class='font-semibold')}}
+              {{form.nome(class="w-full border rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-purple-400", placeholder="Nome")}}
+              {% for erro in form.nome.errors %}
+              <p class="text-red-500 text-sm">{{erro}}</p>
+              {% endfor %}
+            </div>
+            <div>
+              {{form.sobrenome.label(class='font-semibold')}}
+              {{form.sobrenome(class="w-full border rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-purple-400", placeholder="Sobrenome")}}
+              {% for erro in form.sobrenome.errors %}
+              <p class="text-red-500 text-sm">{{erro}}</p>
+              {% endfor %}
+            </div>
           </div>
 
           <div>
             {{form.email.label(class='font-semibold')}}
-            {{form.email(class="w-full border rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-purple-400")}}
+            {{form.email(class="w-full border rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-purple-400", placeholder="E-mail")}}
             {% for erro in form.email.errors %}
             <p class="text-red-500 text-sm">{{erro}}</p>
             {% endfor %}
@@ -44,7 +45,7 @@
 
           <div>
             {{form.login.label(class='font-semibold')}}
-            {{form.login(class="w-full border rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-purple-400")}}
+            {{form.login(class="w-full border rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-purple-400", placeholder="Login")}}
             {% for erro in form.login.errors %}
             <p class="text-red-500 text-sm">{{erro}}</p>
             {% endfor %}
@@ -52,7 +53,7 @@
 
           <div>
             {{form.senha.label(class='font-semibold')}}
-            {{form.senha(class="w-full border rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-purple-400")}}
+            {{form.senha(class="w-full border rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-purple-400", placeholder="Senha")}}
             {% for erro in form.senha.errors %}
             <p class="text-red-500 text-sm">{{erro}}</p>
             {% endfor %}
@@ -62,11 +63,14 @@
         type="submit">
         Cadastrar
       </button>
-      </form>
-            {% if menssagem_erro %}
-            <p style="color: red">{{menssagem_erro}}</p>
-            <br>
-            {%endif%}            
+      </form>      
+          {% if menssagem_erro %}
+            <div class="
+              p-3 my-3 rounded-lg text-white text-center
+              bg-red-500">
+              {{ menssagem_erro }}
+            </div>
+          {%endif%}            
       <p class="py-3 mx-2">Já é cliente?</p>
       <a class="border border-gray-100 bg-violet rounded-lg shadow-lg p-2 hover:bg-gray-100 inline-block" href="/">Entre agora</a>
     </div>

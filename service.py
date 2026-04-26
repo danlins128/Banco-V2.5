@@ -1,3 +1,5 @@
+from werkzeug.security import generate_password_hash, check_password_hash
+
 class ContaService:
   def __init__(self, repo):
     self.repo = repo
@@ -12,7 +14,9 @@ class ContaService:
     
     from usuario import Usuarios
 
-    novo = Usuarios(nome, sobrenome, email, login, senha)
+    senha_hash = generate_password_hash(senha)
+
+    novo = Usuarios(nome, sobrenome, email, login, senha_hash)
 
     self.repo.cadastrar(novo)
     return{"msg": "Cadastro efetuado com sucesso!"}
@@ -22,7 +26,7 @@ class ContaService:
     
     if usuario is None:
         return {"erro": "Usuário não encontrado!"}
-    if senha != usuario.senha:
+    if not check_password_hash(usuario.senha , senha):
         return {"erro": "Usuário ou senha inválido!"}
     
     return {

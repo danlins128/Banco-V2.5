@@ -23,7 +23,7 @@ class CadastroForm(FlaskForm):
     senha = PasswordField('Senha', validators=[
         DataRequired('Senha é obrigatório'),
         Length(min=6, message=('Mínimo de 6 caracteres')),
-        Regexp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&]).+$', message='Precisa ter letra, número e caractere especial')])
+        Regexp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&]).+$', message='Precisa ter letra maiúscula, minúscula, número e caractere especial')])
     
 class LoginForm(FlaskForm):
     login = StringField('Login', validators=[

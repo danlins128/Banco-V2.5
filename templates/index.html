@@ -20,23 +20,21 @@
                 {% with mensagens = get_flashed_messages(with_categories=true)%}
                     {% if mensagens %}
                         {% for categoria, mensagem in mensagens %}
-
-                        <div class="
-                            p-3 mb-3 rounded-lg text-white text-center
-                            {% if categoria == 'sucesso' %} bg-green-500
-                            {% endif %}">
-                            {{ mensagem }}
-                        </div>
-
+                            <div class="
+                                p-3 mb-3 rounded-lg text-white text-center
+                                {% if categoria == 'sucesso' %} bg-green-500
+                                {% endif %}">
+                                {{ mensagem }}
+                            </div>
                         {% endfor %}
                     {% endif %}
-                    {% endwith %}
+                {% endwith %}
                 <form class="flex flex-col gap-3" action="" method="POST" novalidate>
                     {{form.hidden_tag()}}
 
                     <div>
                     {{form.login.label(class='font-semibold')}}
-                    {{form.login(class="w-full border rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-purple-400")}}
+                    {{form.login(class="w-full border rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-purple-400", placeholder="Login")}}
                     {% for erro in form.login.errors %}
                     <p class="text-red-500 text-sm">{{erro}}</p>
                     {% endfor %}
@@ -44,7 +42,7 @@
 
                 <div>
                     {{form.senha.label(class='font-semibold')}}
-                    {{form.senha(class="w-full border rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-purple-400")}}
+                    {{form.senha(class="w-full border rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-purple-400", placeholder="Senha")}}
                     {% for erro in form.senha.errors %}
                     <p class="text-red-500 text-sm">{{erro}}</p>
                     {% endfor %}
