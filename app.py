@@ -102,6 +102,7 @@ def ver_saldo():
     session["saldo"] = saldo
     
     return render_template("partials/saldo.html")
+
 @app.route("/deposito", methods=["POST"])
 def deposito():
     if "conta" not in session:
@@ -128,7 +129,7 @@ def sacar():
         valor = float(valor)
         resultado = service.sacar(session["conta"], valor)
         if isinstance(resultado, dict) and "erro" in resultado:
-            return resultado
+            return render_template('partials/saque_falha.html', erro = resultado['erro'], valor = resultado['valor'])
         response = make_response(render_template ("partials/saque_sucesso.html", valor=valor))
         response.headers["HX-Trigger"]="atualizarSaldo"
         
