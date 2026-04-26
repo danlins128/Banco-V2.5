@@ -1,4 +1,4 @@
-from flask import Flask, request, session, redirect, url_for, render_template, make_response
+from flask import Flask, flash, request, session, redirect, url_for, render_template, make_response
 from repository import UsuarioRepository
 from service import ContaService
 from forms import CadastroForm, LoginForm
@@ -18,7 +18,10 @@ def format_dinheiro(valor):
 @app.route("/", methods=['GET', 'POST'])
 def home():
     form = LoginForm()
-
+    
+    
+    # Quando o usuário entra no site, o método é GET (ele ignora esse if)
+    # Quando ele clica em "Enviar", o método é POST e o if é validado
     if form.validate_on_submit():
        resultado = service.login(
           form.login.data,
@@ -26,7 +29,7 @@ def home():
        )
     
        if "erro" in resultado:
-            return render_template("index.html", mensagem_erro=resultado["erro"]) #3 não cria sessão, deu erro.
+            return render_template("index.html", form=form, menssagem_erro=resultado["erro"]) #3 não cria sessão, deu erro.
        session["conta"] = resultado["conta"]
        session["nome"] = resultado["nome"]
        session["saldo"] = resultado["saldo"]
@@ -34,7 +37,7 @@ def home():
        return redirect(url_for("menu"))
 
     return render_template('index.html', form=form)
-        
+       
 @app.route("/cadastrar", methods=["GET", "POST"])
 def cadastro():
   form = CadastroForm()
@@ -48,32 +51,13 @@ def cadastro():
         form.senha.data
      )
      if "erro" in resultado:
-        return render_template("cadastrar.html", form=form, erro=resultado["erro"])
+        return render_template("cadastrar.html", form=form, menssagem_erro=resultado["erro"])
+     
      return redirect(url_for('home'))
      
   return render_template("cadastrar.html", form=form)
 
-    
-@app.route("/login", methods=["POST"])
-def login():
-    form = LoginForm()
-
-    if form.validate_on_submit():
-       resultado = service.login(
-          form.login.data,
-          form.senha.data
-       )
-    
-       if "erro" in resultado:
-            return render_template("index.html", mensagem_erro=resultado["erro"]) #3 não cria sessão, deu erro.
-       session["conta"] = resultado["conta"]
-       session["nome"] = resultado["nome"]
-       session["saldo"] = resultado["saldo"]
-        #4 guarda quem está logado
-       return redirect(url_for("menu"))
-
-    return render_template('index.html', form=form) # redireciona se login for efetuado
-    
+  
 @app.route("/menu", methods=["GET"])
 def menu():
   if "conta" not in session:

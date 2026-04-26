@@ -21,15 +21,15 @@ class CadastroForm(FlaskForm):
         Email(message='E-mail inválido')])
     
     senha = PasswordField('Senha', validators=[
-        DataRequired(),
+        DataRequired('Senha é obrigatório'),
         Length(min=6, message=('Mínimo de 6 caracteres')),
         Regexp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&]).+$', message='Precisa ter letra, número e caractere especial')])
     
 class LoginForm(FlaskForm):
     login = StringField('Login', validators=[
-        DataRequired()
+        DataRequired('Digite seu login')
     ])
 
     senha = PasswordField('Senha', validators=[
-        DataRequired()
+        DataRequired('Digite sua senha')
     ])

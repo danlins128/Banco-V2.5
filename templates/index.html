@@ -17,7 +17,7 @@
               </div>
             <div class="text-base font-semibold flex-text-center pb-5"><h5>Entre com sua conta para acessar</h5></div>
             <div class="relative">
-                <form class="flex flex-col gap-3" action="/login" method="POST">
+                <form class="flex flex-col gap-3" action="" method="POST" novalidate>
                     {{form.hidden_tag()}}
 
                     <div>
@@ -37,11 +37,11 @@
                 </div>
                 <button class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-md mt-2" type="submit">Entrar</button>
             </form>
-            {% if mensagem_erro %}
-            <p style="color: red">{{mensagem_erro}}</p>
+            {% if menssagem_erro %}
+            <p style="color: red">{{menssagem_erro}}</p>
             {%endif%}
-            {% if mensagem_sucesso %}
-            <p style="color: green">{{mensagem_sucesso}}</p>
+            {% if menssagem_sucesso %}
+            <p style="color: green">{{menssagem_sucesso}}</p>
             {%endif%}
             <p class="py-3 mx-2">Ainda não é cliente?</p>
               <a class="border border-gray-100 bg-violet rounded-lg shadow-lg p-2 hover:bg-gray-100 inline-block" href="/cadastrar">Crie uma conta agora!  +</a>
