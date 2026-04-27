@@ -31,6 +31,7 @@ class ContaService:
     
     return {
       "nome":usuario.nome,
+      "sobrenome":usuario.sobrenome,
       "conta":usuario.conta,
       "saldo":usuario.saldo
     }
@@ -51,3 +52,23 @@ class ContaService:
     valor_atual -= valor
     self.repo.atualizar_saldo(conta, valor_atual)
     return valor_atual
+  
+  def transferir(self, conta_local, conta_destino, valor):
+    usuario_destino = self.repo.buscar_por_conta(conta_destino)  
+    if usuario_destino is None:
+       return {'erro': 'Usuário inexistente'}
+      
+    saldo_origem = self.repo.busca_saldo(conta_local)
+    saldo_destino = self.repo.busca_saldo(conta_destino)
+
+    if valor > saldo_origem:
+       return {'erro': 'Saldo insuficiente!', "valor": saldo_origem}
+    
+    debitancia = saldo_origem - valor
+    transferencia =  saldo_destino + valor
+
+    self.repo.atualizar_saldo(conta_local, debitancia)
+    self.repo.atualizar_saldo(usuario_destino.conta, transferencia)
+
+    return valor
+    

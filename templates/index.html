@@ -23,6 +23,7 @@
                             <div class="
                                 p-3 mb-3 rounded-lg text-white text-center
                                 {% if categoria == 'sucesso' %} bg-green-500
+                                {% elif categoria == 'erro' %} bg-red-500
                                 {% endif %}">
                                 {{ mensagem }}
                             </div>
@@ -34,7 +35,10 @@
 
                     <div>
                     {{form.login.label(class='font-semibold')}}
-                    {{form.login(class="w-full border rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-purple-400", placeholder="Login")}}
+
+                    {{form.login(class="w-full border rounded-lg p-2 
+                    focus:outline-none focus:ring-1 focus:ring-purple-400", placeholder="Login")}}
+                    
                     {% for erro in form.login.errors %}
                     <p class="text-red-500 text-sm">{{erro}}</p>
                     {% endfor %}
@@ -49,12 +53,14 @@
                 </div>
                 <button class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-md mt-2" type="submit">Entrar</button>
             </form>
-            {% if menssagem_erro %}
-            <p style="color: red">{{menssagem_erro}}</p>
-            {%endif%}
-            {% if menssagem_sucesso %}
-            <p style="color: green">{{menssagem_sucesso}}</p>
-            {%endif%}
+            <div class="flex justify-center gap-3 m-4">
+                {% if menssagem_erro %}
+                <p style="color: red">{{menssagem_erro}}</p>
+                {%endif%}
+                {% if menssagem_sucesso %}
+                <p style="color: green">{{menssagem_sucesso}}</p>
+                {%endif%}
+            </div>
             <p class="py-3 mx-2">Ainda não é cliente?</p>
               <a class="border border-gray-100 bg-violet rounded-lg shadow-lg p-2 hover:bg-gray-100 inline-block" href="/cadastrar">Crie uma conta agora!  +</a>
             

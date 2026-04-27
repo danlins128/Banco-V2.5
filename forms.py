@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, EmailField
-from wtforms.validators import DataRequired, Length, Email, Regexp
+from wtforms import StringField, PasswordField, EmailField, FloatField, IntegerField
+from wtforms.validators import DataRequired, Length, Email, Regexp, NumberRange
 
 class CadastroForm(FlaskForm):
     nome = StringField("Nome", validators=[
@@ -32,4 +32,15 @@ class LoginForm(FlaskForm):
 
     senha = PasswordField('Senha', validators=[
         DataRequired('Digite sua senha')
+    ])
+
+
+class TransferForm(FlaskForm):
+    conta_destino = IntegerField('Conta Destino', validators=[
+        DataRequired("Digite uma conta válida")
+    ])
+
+    valor = FloatField('Valor', validators=[
+        DataRequired("Digite um valor válido"),
+        NumberRange(min=0.01, message="O valor deve ser positivo")
     ])

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex flex-col justify-center items-center">
+    <div id="container" class="w-full max-w-md border rounded-lg bg-white shadow-lg p-6">
+        <header class="grid grid-cols-3 items-center m-1 ">
+            <img  class="h-18 w-16" src="/static/Logobank.png" alt="Icone do usuário">
+            <h2 class="flex justify-center text-3xl">LinsBank</h2>
+        </header>
+        <hr>
+        <div 
+        id="saldo" 
+        hx-get="/saldo" 
+        hx-trigger="load, atualizarSaldo from:body"
+        hx-swap="innerHTML"
+        class="flex justify-center m-2">
+        <div class="border-2 border-black rounded-2xl min-w-full p-4 bg-gradient-to-b from-purple-400 to-purple-600 text-left text-white">
+            <p class="animate-bounce pt-4">Carregando...</p>
+        </div>
+      </div>
+      <form action="" class="flex flex-col gap-3" method="POST">
+        {{form.hidden_tag()}}
+
+        <h1 class="text-3xl font-bold">Transferir para: </h1>
+        <div>
+            {{form.conta_destino.label(class='text-2xl font-semibold')}}
+            {{form.conta_destino(class="w-full border rounded-lg p-4 text-2xl 
+            focus:outline-none focus:ring-1 focus:ring-purple-400",)}}
+        </div>
+
+        <div >
+            {{form.valor.label(class='text-2xl font-semibold')}}
+            {{form.valor(class="w-full border rounded-lg p-4 text-2xl
+            focus:outline-none focus:ring-1 focus:ring-purple-400", placeholder='R$ 00,00')}}
+        </div>
+        <button class="bg-purple-500 hover:bg-purple-700 text-white text-2xl font-bold p-4 rounded-2xl mt-2 active:scale-90 transition-transform" type="submit">Enviar</button>
+      </form>
+      <a class="flex justify-center bg-red-500 text-white text-1xl mt-4 p-2 rounded-2xl hover:bg-red-600 active:scale-90 transition-transform" href="/menu">Voltar</a>
+    </div>
+    <div id="conteudo_dinamico" class="w-full -max-w-md justify-center items-center">
+        <!-- div para sub menu-->
+</div>
+</div>
+{% endblock %}

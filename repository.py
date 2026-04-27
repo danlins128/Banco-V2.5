@@ -33,6 +33,9 @@ class UsuarioRepository:
     def buscar_por_email(self, email):
         return self._buscar_usuario("email = ?", (email,))
     
+    def buscar_por_conta(self, conta):
+        return self._buscar_usuario("conta = ?", (conta,))
+    
     def cadastrar(self, usuario):
         with self.conectar() as conn:
             cursor = conn.cursor()

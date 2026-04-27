@@ -1,7 +1,7 @@
 from flask import Flask, flash, request, session, redirect, url_for, render_template, make_response
 from repository import UsuarioRepository
 from service import ContaService
-from forms import CadastroForm, LoginForm
+from forms import CadastroForm, LoginForm, TransferForm
 
 app = Flask(__name__)
 app.secret_key = "Secret_Key"
@@ -32,6 +32,7 @@ def home():
             return render_template("index.html", form=form, menssagem_erro=resultado["erro"]) #3 não cria sessão, deu erro.
        session["conta"] = resultado["conta"]
        session["nome"] = resultado["nome"]
+       session["sobrenome"] = resultado["sobrenome"]
        session["saldo"] = resultado["saldo"]
         #4 guarda quem está logado
        return redirect(url_for("menu"))
@@ -62,7 +63,8 @@ def cadastro():
 @app.route("/menu", methods=["GET"])
 def menu():
   if "conta" not in session:
-    return render_template("index.html")
+    flash('Usuário não conectado!', 'erro')
+    return redirect(url_for('home'))
   return render_template("menu.html")
   
 @app.route("/menu/deposito")
@@ -81,17 +83,19 @@ def logout():
 @app.route("/saldo")
 def ver_saldo():
     if "conta" not in session:
-        return {"erro": "Usuário não logado"}
+        flash('Usuário não conectado!', 'erro')
+        return redirect(url_for('home'))
         
     saldo = service.saldo(session["conta"])
     session["saldo"] = saldo
     
     return render_template("partials/saldo.html")
 
-@app.route("/deposito", methods=["POST"])
+@app.route("/deposito", methods=["POST", 'GET'])
 def deposito():
     if "conta" not in session:
-        return {"erro": "Usuário sem permissão"}
+        flash('Usuário não conectado!', 'erro')
+        return redirect(url_for('home'))
     valor = request.form.get("valor")
     if valor == "":
         return {"erro": "Digite um valor válido no campo acima"}
@@ -103,10 +107,11 @@ def deposito():
         
     return response
     
-@app.route("/saque", methods=["POST"])
+@app.route("/saque", methods=["POST", "GET"])
 def sacar():
     if "conta" not in session:
-        return {"erro": "Usuário sem permissão"}
+        flash('Usuário não conectado!', 'erro')
+        return redirect(url_for('home'))
     valor = request.form.get("valor")
     if valor == "":
         return {"erro": "Digite um valor válido no campo acima"}
@@ -119,6 +124,27 @@ def sacar():
         response.headers["HX-Trigger"]="atualizarSaldo"
         
         return response
+
+@app.route('/transferir', methods=["GET", "POST"])
+def transferir():  
+   
+   if "conta" not in session:
+      flash('Usuário não conectado!', 'erro')
+      return redirect(url_for('home'))
+   
+   form = TransferForm()
+   if form.validate_on_submit():
+      resultado = service.transferir(
+         session["conta"],
+         form.conta_destino.data,
+         form.valor.data
+      )
+      if isinstance(resultado, dict) and "erro" in resultado:
+        return render_template('partials/transferencia_falha.html', erro = resultado['erro'], valor = session['saldo'])
+      else:
+        return render_template("partials/transferencia_sucesso.html", valor=form.valor.data)
+      
+   return render_template('transferencia.html', form=form)
 
     
 if __name__ == "__main__":
