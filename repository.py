@@ -15,6 +15,16 @@ class UsuarioRepository:
                 login TEXT UNIQUE,
                 senha TEXT,
                 saldo REAL DEFAULT 0)""")
+    
+            conn.execute(""" CREATE TABLE IF NOT EXISTS transacoes(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                conta_origem INTEGER,
+                conta_destino INTEGER NULLABLE,
+                tipo TEXT,
+                valor REAL,
+                data_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )""")
+                
 
     def conectar(self):
         return sqlite3.connect("banco_dados.db", timeout=10)
@@ -63,3 +73,18 @@ class UsuarioRepository:
         with self.conectar() as conn:
             conn.execute("UPDATE usuarios SET saldo =? WHERE conta=?", (valor, conta))
             conn.commit()
+
+    def registrar_transacao(self, conta_origem, conta_destino, tipo, valor):
+        with self.conectar() as conn:
+            conn.execute("""INSERT INTO transacoes (conta_origem, conta_destino, tipo, valor)
+                         VALUES (?, ?, ?, ?)""", (conta_origem, conta_destino, tipo, valor))
+            conn.commit()
+
+    def buscar_transacao(self, conta, limit=3):
+        with self.conectar() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""SELECT conta_origem, conta_destino, tipo, valor, data_hora 
+                              FROM transacoes 
+                              WHERE conta_origem = ? OR conta_destino = ? 
+                              ORDER BY data_hora DESC LIMIT ?""", (conta, conta, limit))
+            return cursor.fetchall()

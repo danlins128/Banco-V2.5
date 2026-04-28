@@ -40,10 +40,11 @@ class ContaService:
      return self.repo.busca_saldo(conta)
   
   def depositar(self, conta, valor):
-     valor_atual = self.repo.busca_saldo(conta)
-     valor += valor_atual
-     self.repo.atualizar_saldo(conta, valor)
-     return valor
+     saldo_atual = self.repo.busca_saldo(conta)
+     novo_saldo = saldo_atual + valor
+     self.repo.atualizar_saldo(conta, novo_saldo)
+     self.repo.registrar_transacao(conta, None, "deposito", valor)
+     return novo_saldo
   
   def sacar(self,conta ,valor):
     valor_atual = self.repo.busca_saldo(conta)
@@ -51,6 +52,7 @@ class ContaService:
       return {"erro": "Saldo insuficiente!", "valor": valor_atual}
     valor_atual -= valor
     self.repo.atualizar_saldo(conta, valor_atual)
+    self.repo.registrar_transacao(conta, None, "saque", valor)
     return valor_atual
   
   def transferir(self, conta_local, conta_destino, valor):
@@ -69,6 +71,10 @@ class ContaService:
 
     self.repo.atualizar_saldo(conta_local, debitancia)
     self.repo.atualizar_saldo(usuario_destino.conta, transferencia)
+    self.repo.registrar_transacao(conta_local, conta_destino, "transferencia", valor)
 
     return valor
+  
+  def extrato(self, conta):
+    return self.repo.buscar_transacao(conta)
     

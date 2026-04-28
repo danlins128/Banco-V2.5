@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex flex-col justify-center items-center">
+    <div id="container" class="w-full max-w-md border rounded-lg bg-white shadow-lg p-6">
+        <header class="grid grid-cols-3 items-center m-1 ">
+            <img  class="h-18 w-16" src="/static/Logobank.png" alt="Icone do usuário">
+            <h2 class="flex justify-center text-3xl">LinsBank</h2>
+        </header>
+        <hr>
+        <div>
+            <h1 class="text-3xl font-bold m-4">Últimas Transações</h1>
+            
+            {% for transacao in transacoes %}
+            
+
+            {#  1. Descobrir se é entrada ou saída #}
+            {% if transacao[2] == 'deposito' %}
+                {% set entrada = true %}
+            {% else %}
+                {% set entrada = conta_logada == transacao[1] %}
+            {% endif %}
+            
+            {#  2. Definir cor baseada nisso #}
+            {% if entrada %}
+                {% set cor = "green" %}
+                {% set tipo_label = "crédito" %}
+            {% else %}
+                {% set cor = "red" %}
+                {% set tipo_label = "débito" %}
+            {% endif %}
+
+            {#  3. Definir título amigável #}
+            {% if transacao[2] == 'transferencia' %}
+                {% if entrada %}
+                    {% set titulo = "Transferência Recebida" %}
+                {% else %}
+                    {% set titulo = "Transferência Enviada" %}
+                {% endif %}
+            {% elif transacao[2] == 'deposito' %}
+                {% set titulo = "Depósito" %}
+            {% elif transacao[2] == 'saque' %}
+                {% set titulo = "Saque" %}
+            {% else %}
+                {% set titulo = transacao[2] %}
+            {% endif %}
+
+            <div class="border-2 border-{{cor}}-400 rounded-2xl p-4 mt-4 bg-white shadow">                
+                <div class="flex justify-between items-center">
+                    <p class="text-lg font-semibold">{{ titulo }}</p>
+                    <p class="text-{{cor}}-500 font-bold">{{ tipo_label }}</p>
+                </div>
+
+                {#  5. Valor destacado #}
+                <p class="text-2xl font-bold mt-2">
+                    {% if entrada %}
+                        + R$ {{ transacao[3] | dinheiro }}
+                    {% else %}
+                        - R$ {{ transacao[3] | dinheiro }}
+                    {% endif %}
+                </p>
+            </div>
+
+        {% else %}
+    <p class="mt-4 text-center text-gray-500">
+        Nenhuma transação encontrada.
+    </p>
+{% endfor %}
+        </div>
+        <div class="flex justify-center mt-6">
+            <a class="bg-purple-500 w-full text-white text-2xl text-center mt-4 p-2 rounded-2xl hover:bg-purple-800 active:scale-90 transition-transform" href="/menu">Voltar</a>
+        </div>
+    </div>
+</div>
+{%endblock%}

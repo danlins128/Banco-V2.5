@@ -146,6 +146,13 @@ def transferir():
       
    return render_template('transferencia.html', form=form)
 
-    
+@app.route('/menu/extrato')
+def extrato():
+    if "conta" not in session:
+        flash('Usuário não conectado!', 'erro')
+        return redirect(url_for('home'))
+    transacoes = service.extrato(session["conta"])
+    return render_template("partials/extrato.html", transacoes=transacoes, conta_logada=session['conta'])
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=8080)
