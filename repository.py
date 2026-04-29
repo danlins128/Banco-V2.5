@@ -1,90 +1,184 @@
-import sqlite3 
+import psycopg
+import os
 from random import randint
 from usuario import Usuarios
 
+
 class UsuarioRepository:
-    def __init__(self):
-        # Cria a tabela e fecha. 
-        with self.conectar() as conn:
-            conn.execute("""CREATE TABLE IF NOT EXISTS usuarios(
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                conta INTEGER UNIQUE,
-                nome TEXT,
-                sobrenome TEXT,
-                email TEXT UNIQUE,
-                login TEXT UNIQUE,
-                senha TEXT,
-                saldo REAL DEFAULT 0)""")
-    
-            conn.execute(""" CREATE TABLE IF NOT EXISTS transacoes(
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                conta_origem INTEGER,
-                conta_destino INTEGER NULLABLE,
-                tipo TEXT,
-                valor REAL,
-                data_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                )""")
-                
 
     def conectar(self):
-        return sqlite3.connect("banco_dados.db", timeout=10)
+        url = os.getenv("DATABASE_URL")
+        print("DEBUG DATABASE_URL:", url)
+        return psycopg.connect(url)
 
     def _buscar_usuario(self, query, params):
         with self.conectar() as conn:
-            cursor = conn.cursor()
-            # Buscamos as colunas na ordem exata do construtor da classe Usuarios
-            cursor.execute(f"SELECT nome, sobrenome, email, login, senha, saldo, conta FROM usuarios WHERE {query}", params)
-            dados = cursor.fetchone()
-            return Usuarios(*dados) if dados else None
+            with conn.cursor() as cursor:
+                cursor.execute(
+                    f"""SELECT nome, sobrenome, email, login, senha, saldo, conta 
+                        FROM usuarios WHERE {query}""",
+                    params
+                )
+                dados = cursor.fetchone()
+                return Usuarios(*dados) if dados else None
 
     def buscar_por_login(self, login):
-        return self._buscar_usuario("login = ?", (login,))
+        return self._buscar_usuario("login = %s", (login,))
 
     def buscar_por_email(self, email):
-        return self._buscar_usuario("email = ?", (email,))
-    
+        return self._buscar_usuario("email = %s", (email,))
+
     def buscar_por_conta(self, conta):
-        return self._buscar_usuario("conta = ?", (conta,))
-    
+        return self._buscar_usuario("conta = %s", (conta,))
+
     def cadastrar(self, usuario):
         with self.conectar() as conn:
-            cursor = conn.cursor()
-            while True:
-                gerar_conta = randint(1000, 9999)
-                # Verifica se a conta já existe
-                cursor.execute("SELECT 1 FROM usuarios WHERE conta = ?", (gerar_conta,))
-                if not cursor.fetchone():
-                    cursor.execute("""INSERT INTO usuarios
-                        (conta, nome, sobrenome, email, login, senha, saldo) 
-                        VALUES (?,?,?,?,?,?,?)""",
-                        (gerar_conta, usuario.nome, usuario.sobrenome, usuario.email, 
-                         usuario.login, usuario.senha, usuario.saldo))
-                    conn.commit()
-                    break
+            with conn.cursor() as cursor:
+                while True:
+                    gerar_conta = randint(1000, 9999)
+
+                    cursor.execute(
+                        "SELECT 1 FROM usuarios WHERE conta = %s",
+                        (gerar_conta,)
+                    )
+
+                    if not cursor.fetchone():
+                        cursor.execute(
+                            """INSERT INTO usuarios
+                            (conta, nome, sobrenome, email, login, senha, saldo)
+                            VALUES (%s,%s,%s,%s,%s,%s,%s)""",
+                            (
+                                gerar_conta,
+                                usuario.nome,
+                                usuario.sobrenome,
+                                usuario.email,
+                                usuario.login,
+                                usuario.senha,
+                                usuario.saldo
+                            )
+                        )
+                        break
 
     def busca_saldo(self, conta):
         with self.conectar() as conn:
-            cursor = conn.cursor()
-            cursor.execute("SELECT saldo FROM usuarios WHERE conta=?", (conta,))
-            resultado = cursor.fetchone()
-            return resultado[0] if resultado else 0
+            with conn.cursor() as cursor:
+                cursor.execute(
+                    "SELECT saldo FROM usuarios WHERE conta = %s",
+                    (conta,)
+                )
+                resultado = cursor.fetchone()
+                return resultado[0] if resultado else 0
 
     def atualizar_saldo(self, conta, valor):
         with self.conectar() as conn:
-            conn.execute("UPDATE usuarios SET saldo =? WHERE conta=?", (valor, conta))
-            conn.commit()
+            with conn.cursor() as cursor:
+                cursor.execute(
+                    "UPDATE usuarios SET saldo = %s WHERE conta = %s",
+                    (valor, conta)
+                )
 
     def registrar_transacao(self, conta_origem, conta_destino, tipo, valor):
         with self.conectar() as conn:
-            conn.execute("""INSERT INTO transacoes (conta_origem, conta_destino, tipo, valor)
-                         VALUES (?, ?, ?, ?)""", (conta_origem, conta_destino, tipo, valor))
-            conn.commit()
+            with conn.cursor() as cursor:
+                cursor.execute(
+                    """INSERT INTO transacoes 
+                    (conta_origem, conta_destino, tipo, valor)
+                    VALUES (%s, %s, %s, %s)""",
+                    (conta_origem, conta_destino, tipo, valor)
+                )
 
     def buscar_transacao(self, conta, limit=3):
         with self.conectar() as conn:
-            cursor = conn.cursor()
-            cursor.execute("""SELECT conta_origem, conta_destino, tipo, valor, data_hora 
-                              FROM transacoes 
-                              WHERE conta_origem = ? OR conta_destino = ? 
-                              ORDER BY data_hora DESC LIMIT ?""", (conta, conta, limit))
-            return cursor.fetchall()
+            with conn.cursor() as cursor:
+                cursor.execute(
+                    """SELECT conta_origem, conta_destino, tipo, valor, data_hora
+                    FROM transacoes
+                    WHERE conta_origem = %s OR conta_destino = %s
+                    ORDER BY data_hora DESC
+                    LIMIT %s""",
+                    (conta, conta, limit)
+                )
+                return cursor.fetchall()
+
+    def depositar(self, conta, valor):
+        with self.conectar() as conn:
+            with conn.cursor() as cursor:
+
+                cursor.execute(
+                "UPDATE usuarios SET saldo = saldo + %s WHERE conta = %s",
+                (valor, conta)            )
+
+                cursor.execute(
+                """INSERT INTO transacoes 
+                (conta_origem, conta_destino, tipo, valor)
+                VALUES (%s, %s, %s, %s)""",
+                (conta, None, "deposito", valor)            )
+
+    def sacar(self, conta, valor):
+        with self.conectar() as conn:
+            with conn.cursor() as cursor:
+
+                cursor.execute(
+                "SELECT saldo FROM usuarios WHERE conta = %s FOR UPDATE",
+                (conta,)
+            )
+
+                saldo = cursor.fetchone()[0]
+
+                if valor > saldo:
+                    return None
+
+                cursor.execute(
+                "UPDATE usuarios SET saldo = saldo - %s WHERE conta = %s",
+                (valor, conta)
+            )
+
+                cursor.execute(
+                """INSERT INTO transacoes 
+                (conta_origem, conta_destino, tipo, valor)
+                VALUES (%s, %s, %s, %s)""",
+                (conta, None, "saque", valor)
+            )
+
+                return saldo - valor
+        
+    def transferir(self, conta_origem, conta_destino, valor):
+        with self.conectar() as conn:
+            with conn.cursor() as cursor:
+
+            # trava origem
+                cursor.execute(
+                "SELECT saldo FROM usuarios WHERE conta = %s FOR UPDATE",
+                (conta_origem,)
+            )
+                saldo_origem = cursor.fetchone()[0]
+
+                if valor > saldo_origem:
+                    return None
+
+            # trava destino
+                cursor.execute(
+                "SELECT saldo FROM usuarios WHERE conta = %s FOR UPDATE",
+                (conta_destino,)
+            )
+
+            # atualiza saldos
+                cursor.execute(
+                "UPDATE usuarios SET saldo = saldo - %s WHERE conta = %s",
+                (valor, conta_origem)
+            )
+
+                cursor.execute(
+                "UPDATE usuarios SET saldo = saldo + %s WHERE conta = %s",
+                (valor, conta_destino)
+            )
+
+            # registra
+                cursor.execute(
+                """INSERT INTO transacoes 
+                (conta_origem, conta_destino, tipo, valor)
+                VALUES (%s, %s, %s, %s)""",
+                (conta_origem, conta_destino, "transferencia", valor)
+            )
+
+            return True

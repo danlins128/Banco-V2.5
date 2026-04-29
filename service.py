@@ -40,40 +40,27 @@ class ContaService:
      return self.repo.busca_saldo(conta)
   
   def depositar(self, conta, valor):
-     saldo_atual = self.repo.busca_saldo(conta)
-     novo_saldo = saldo_atual + valor
-     self.repo.atualizar_saldo(conta, novo_saldo)
-     self.repo.registrar_transacao(conta, None, "deposito", valor)
-     return novo_saldo
+    self.repo.depositar(conta, valor)
+    return self.repo.busca_saldo(conta)
   
-  def sacar(self,conta ,valor):
-    valor_atual = self.repo.busca_saldo(conta)
-    if valor > valor_atual:
-      return {"erro": "Saldo insuficiente!", "valor": valor_atual}
-    valor_atual -= valor
-    self.repo.atualizar_saldo(conta, valor_atual)
-    self.repo.registrar_transacao(conta, None, "saque", valor)
-    return valor_atual
+  def sacar(self, conta, valor):
+    resultado = self.repo.sacar(conta, valor)    
+
+    if resultado is None:
+        return {"erro": "Saldo insuficiente!", "valor": self.repo.busca_saldo(conta)}
+
+    return resultado
   
   def transferir(self, conta_local, conta_destino, valor):
-    usuario_destino = self.repo.buscar_por_conta(conta_destino)  
-    if usuario_destino is None:
-       return {'erro': 'Usuário inexistente'}
-      
-    saldo_origem = self.repo.busca_saldo(conta_local)
-    saldo_destino = self.repo.busca_saldo(conta_destino)
+    if not self.repo.buscar_por_conta(conta_destino):
+        return {'erro': 'Usuário inexistente'}
 
-    if valor > saldo_origem:
-       return {'erro': 'Saldo insuficiente!', "valor": saldo_origem}
-    
-    debitancia = saldo_origem - valor
-    transferencia =  saldo_destino + valor
+    resultado = self.repo.transferir(conta_local, conta_destino, valor)
 
-    self.repo.atualizar_saldo(conta_local, debitancia)
-    self.repo.atualizar_saldo(usuario_destino.conta, transferencia)
-    self.repo.registrar_transacao(conta_local, conta_destino, "transferencia", valor)
+    if resultado is None:
+        return {'erro': 'Saldo insuficiente!', 'valor': self.repo.busca_saldo(conta_local)}
 
-    return valor
+    return {"msg": "Transferência realizada"}
   
   def extrato(self, conta):
     return self.repo.buscar_transacao(conta)
