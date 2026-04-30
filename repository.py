@@ -6,10 +6,8 @@ from usuario import Usuarios
 
 class UsuarioRepository:
 
-    def conectar(self):
-        url = os.getenv("DATABASE_URL")
-        print("DEBUG DATABASE_URL:", url)
-        return psycopg.connect(url)
+    def conectar(self):     
+        return psycopg.connect(os.getenv("DATABASE_URL"))
 
     def _buscar_usuario(self, query, params):
         with self.conectar() as conn:
